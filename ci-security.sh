@@ -26,11 +26,11 @@ dotnet() {
     sudo apt-get install apt-transport-https
     sudo apt-get update
     sudo apt-get install dotnet-sdk-3.0
-    if [ $? -eq 0 ]; then
-        sudo -i dpkg --purge packages-microsoft-prod && sudo dpkg -i packages-microsoft-prod.deb
-        sudo apt-get update
-        sudo apt-get install dotnet-sdk-3.0
-    fi
+    # if [ $? -eq 0 ]; then
+    #     sudo -i dpkg --purge packages-microsoft-prod && sudo dpkg -i packages-microsoft-prod.deb
+    #     sudo apt-get update
+    #     sudo apt-get install dotnet-sdk-3.0
+    # fi
     # Install CycloneDX
     dotnet tool install --global CycloneDX
     dotnet tool update --global CycloneDX
