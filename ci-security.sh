@@ -1,6 +1,40 @@
 #!/bin/bash
 #set -x
 
+# Functions
+python() {
+    # Freeze requirements.txt
+    pip freeze > requirements.txt 1>&2
+    # Install cyclonedx to create sbom
+    pip install --trusted-host pypi.org --trusted-host files.pythonhosted.org --trusted-host pypi.python.org cyclonedx-bom
+    #3. Run it and it will generate sbom in current directory
+    cyclonedx-py -i $DIR -o $DIR
+    ls -ltr
+}
+
+dotnet() {
+    # Register Microsoft key and feed
+    wget -q https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+    dpkg -i packages-microsoft-prod.deb
+    sudo dpkg -i packages-microsoft-prod.deb
+    # Install .NET SDK
+    sudo add-apt-repository universe
+    sudo apt-get update
+    sudo apt-get install apt-transport-https
+    sudo apt-get update
+    sudo apt-get install dotnet-sdk-3.0
+    if [ $? -eq 0 ]; then
+        sudo dpkg --purge packages-microsoft-prod && sudo dpkg -i packages-microsoft-prod.deb
+        sudo apt-get update
+        sudo apt-get install dotnet-sdk-3.0
+    fi
+    # Install CycloneDX
+    dotnet tool install --global CycloneDX
+    dotnet tool update --global CycloneDX
+    dotnet cyclonedx $DIR -o $DIR
+}
+
+
 # Set directory to search
 DIR=$1
 # Check project type: .NET (C# or cs) or python
@@ -18,17 +52,12 @@ fi
 case $TYPE in
     "C#")
         echo "Hello C#!"
+        dotnet
         ;;
 
     "Python")
         echo "Hello python!"
-        # Freeze requirements.txt
-        pip freeze > requirements.txt 1>&2
-        # Install cyclonedx to create sbom
-        pip install --trusted-host pypi.org --trusted-host files.pythonhosted.org --trusted-host pypi.python.org cyclonedx-bom
-        #3. Run it and it will generate sbom in current directory
-        cyclonedx-py -i $DIR -o $DIR
-        ls -ltr
+        python
         ;;
 
     *)
