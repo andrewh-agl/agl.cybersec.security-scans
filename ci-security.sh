@@ -3,6 +3,9 @@
 
 # Functions
 python() {
+    # Install curl
+    sudo apt-get update
+    sudo apt-get install curl
     # Freeze requirements.txt
     pip freeze > requirements.txt 1>&2
     # Install cyclonedx to create sbom
@@ -65,19 +68,7 @@ case $TYPE in
 esac
 exit 0
 
-# Install curl
-#apt-get update
-#apt-get install curl
-
-#1. Freeze requirements.txt
-pip freeze > requirements.txt 1>&2
-#2. Install cyclonedx to create sbom
-pip install --trusted-host pypi.org --trusted-host files.pythonhosted.org --trusted-host pypi.python.org cyclonedx-bom
-#3. Run it and it will generate sbom in current directory
-cyclonedx-py
-ls -ltr
-
-#4. Read project UUID from env
+# Read project UUID from env
 DEFAULT_UUID="2d395a41-d684-45c7-a8f9-92d602a43223"
 DEFAULT_KEY="mJaqkPN9JFzFwAKGffU1uN6CuW5Uu5dU"
 PROJECT_UUID=${PROJECT_UUID:-$DEFAULT_UUID}
