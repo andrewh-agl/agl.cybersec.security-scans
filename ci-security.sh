@@ -1,5 +1,5 @@
 #!/bin/bash
-#set -x
+set -x
 
 # Functions
 python() {
@@ -18,7 +18,7 @@ python() {
 dotnet() {
     # Register Microsoft key and feed
     wget -q https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
-    sudo -i dpkg -i packages-microsoft-prod.deb
+    sudo dpkg -i packages-microsoft-prod.deb
     sudo dpkg -i packages-microsoft-prod.deb
     # Install .NET SDK
     sudo add-apt-repository universe
