@@ -43,11 +43,11 @@ dotnet() {
     sudo apt-get update
     sudo apt-get install dotnet-sdk-2.2
     # Install CycloneDX
-    if [[ $? == 0 ]]; then
-        dotnet tool install --global CycloneDX
-        #dotnet tool update --global CycloneDX
-        dotnet CycloneDX $DIR -o $DIR
-    fi
+    # if [[ $? == 0 ]]; then
+    #     dotnet tool install --global CycloneDX
+    #     #dotnet tool update --global CycloneDX
+    #     dotnet CycloneDX $DIR -o $DIR
+    # fi
 }
 
 
@@ -64,11 +64,13 @@ else
     echo "Project type not supported."
     #exit 1
 fi
-dotnet
+
 case $TYPE in
     "C#")
         echo "Hello C#!"
-        #dotnet
+        dotnet
+        dotnet tool install --global CycloneDX
+        dotnet CycloneDX $DIR -o $DIR
         ;;
 
     "Python")
