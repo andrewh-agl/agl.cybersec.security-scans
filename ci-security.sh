@@ -15,7 +15,7 @@ python() {
     ls -ltr
 }
 
-dotnet() {
+dotnet_tool_install() {
     # Register Microsoft key and feed
     wget -q https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb
     sudo dpkg -i packages-microsoft-prod.deb
@@ -67,14 +67,14 @@ fi
 
 case $TYPE in
     "C#")
-        echo "Hello C#!"
-        dotnet
-        dotnet tool install --global CycloneDX
+        echo "Hello C#!" ;
+        dotnet_tool_install ;
+        dotnet tool install --global CycloneDX ;
         dotnet CycloneDX $DIR -o $DIR
         ;;
 
     "Python")
-        echo "Hello python!"
+        echo "Hello python!" ;
         python
         ;;
 
