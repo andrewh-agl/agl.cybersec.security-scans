@@ -84,7 +84,7 @@ case $TYPE in
     *)
         echo ":("
 esac
-exit 0
+#exit 0
 
 # Read project UUID from env
 DEFAULT_UUID="2d395a41-d684-45c7-a8f9-92d602a43223"
@@ -93,7 +93,7 @@ PROJECT_UUID=${PROJECT_UUID:-$DEFAULT_UUID}
 
 API_KEY=${TEAM_KEY:-$DEFAULT_KEY}
 # Generate base64 encoded bom without any whitespaces
-b64bom=$(base64 -w 0 bom.xml)
+b64bom=$(base64 -w 0 $DIR/bom.xml)
 echo $b64bom
 #5. Post sbom to depenedency track
 # curl -i -X "POST" "http://104.43.15.124:443/api/v1/bom" \
