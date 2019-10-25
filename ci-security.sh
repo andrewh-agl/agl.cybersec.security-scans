@@ -70,7 +70,7 @@ case $TYPE in
         echo "Hello C#!" ;
         dotnet_tool_install ;
         dotnet tool install --global CycloneDX ;
-        cyclonedx -o $DIR
+        dotnet-CycloneDX -o $DIR
         ;;
 
     "Python")
