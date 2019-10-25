@@ -22,6 +22,7 @@ dotnet() {
     # Install .NET SDK
     # sudo add-apt-repository universe
     sudo apt-get update
+    chmod u+x ./dotnet-install.sh
     ./dotnet-install.sh -c Current
     # sudo apt-get install --ignore-missing apt-transport-https
     # sudo apt-get update
