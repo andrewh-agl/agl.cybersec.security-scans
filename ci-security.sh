@@ -45,7 +45,7 @@ dotnet() {
     # Install CycloneDX
     if [[ $? == 0 ]]; then
         dotnet tool install --global CycloneDX
-        dotnet tool update --global CycloneDX
+        #dotnet tool update --global CycloneDX
         dotnet cyclonedx $DIR -o $DIR
     fi
 }
