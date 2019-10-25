@@ -69,10 +69,10 @@ case $TYPE in
     "C#")
         echo "Hello C#!" ;
         dotnet_tool_install ;
-        dotnet --info
-        dotnet tool install --tool-path . CycloneDX ;
-        dotnet cyclonedx --help
-        dotnet CycloneDX $DIR -o $DIR
+        # dotnet --info
+        # dotnet tool install --tool-path . CycloneDX ;
+        # dotnet cyclonedx --help
+        # dotnet CycloneDX $DIR -o $DIR
         ;;
 
     "Python")
