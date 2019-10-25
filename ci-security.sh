@@ -69,6 +69,7 @@ case $TYPE in
     "C#")
         echo "Hello C#!" ;
         dotnet_tool_install ;
+        dotnet --info
         dotnet tool install --global CycloneDX ;
         dotnet CycloneDX $DIR -o $DIR
         ;;
