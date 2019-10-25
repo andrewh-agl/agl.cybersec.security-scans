@@ -72,8 +72,8 @@ case $TYPE in
         dotnet --info
         dotnet tool install --tool-path . CycloneDX ;
         ls -ltr ./dotnet-CycloneDX ;
-        ./dotnet-CycloneDX --help
-        dotnet CycloneDX $DIR -o $DIR
+        #./dotnet-CycloneDX --help
+        ./dotnet-CycloneDX $DIR -o $DIR
         ;;
 
     "Python")
