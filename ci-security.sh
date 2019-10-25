@@ -41,7 +41,7 @@ dotnet_tool_install() {
     # sudo chown root:root /etc/apt/sources.list.d/microsoft-prod.list
     sudo apt-get install -y apt-transport-https
     sudo apt-get update
-    sudo apt-get install dotnet-sdk-2.2
+    sudo apt-get install dotnet-sdk-3.0
     # Install CycloneDX
     # if [[ $? == 0 ]]; then
     #     dotnet tool install --global CycloneDX
@@ -70,7 +70,7 @@ case $TYPE in
         echo "Hello C#!" ;
         dotnet_tool_install ;
         dotnet tool install --global CycloneDX ;
-        dotnet-CycloneDX -o $DIR
+        dotnet CycloneDX $DIR -o $DIR
         ;;
 
     "Python")
