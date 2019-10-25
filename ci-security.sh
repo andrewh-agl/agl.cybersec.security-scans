@@ -64,11 +64,11 @@ else
     echo "Project type not supported."
     #exit 1
 fi
-
+dotnet
 case $TYPE in
     "C#")
         echo "Hello C#!"
-        dotnet
+        #dotnet
         ;;
 
     "Python")
