@@ -71,9 +71,9 @@ case $TYPE in
         dotnet_tool_install ;
         dotnet --info
         dotnet tool install --tool-path . CycloneDX ;
-        ls -ltr ./dotnet-CycloneDX ;
         #./dotnet-CycloneDX --help
         ./dotnet-CycloneDX $DIR -o $DIR
+        cat $DIR/bom.xml
         ;;
 
     "Python")
