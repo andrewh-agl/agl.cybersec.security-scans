@@ -6,7 +6,7 @@ python_tool_install() {
     # Install curl
     sudo apt-get update
     sudo apt-get install curl
-    sudo apt install python-pip
+    #sudo apt install python-pip
     pip --version
     export PATH="$PATH:~/.local/bin"
     
@@ -92,8 +92,8 @@ case $TYPE in
         #3. Run it and it will generate sbom in current directory
         pip show cyclonedx-bom ;
         echo $PATH ;
-        cyclonedx-py -i $DIR/requirements.txt -o $DIR ;
-        #cyclonedx-py
+        #cyclonedx-py -i $DIR/requirements.txt -o $DIR ;
+        cyclonedx-py
         ls -ltr $DIR
         #ls -ltr /home/vsts/.local/lib/python2.7/site-packages/
         #ls -ltr ~/.local/bin
