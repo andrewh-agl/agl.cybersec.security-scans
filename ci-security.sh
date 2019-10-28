@@ -9,7 +9,7 @@ python_tool_install() {
     sudo apt install python-pip
     pip --version
     export PATH="$PATH:/usr/lib/python2.7/bin"
-    ls -ltr /usr/lib/python2.7/bin/
+    
     # Freeze requirements.txt
     # pip freeze > requirements.txt
     # # Install cyclonedx to create sbom
@@ -93,7 +93,7 @@ case $TYPE in
         pip show cyclonedx-bom ;
         echo $PATH ;
         cyclonedx-py -i $DIR -o $DIR ;
-        ls -ltr $DIR ;
+        ls -ltr /usr/lib/python2.7/bin/
         cat $DIR/bom.xml
         ;;
 
