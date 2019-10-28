@@ -8,14 +8,15 @@ python() {
     sudo apt-get install curl
     sudo apt install python-pip
     pip --version
+    export PATH="$PATH:/usr/lib/python2.7"
     # Freeze requirements.txt
     pip freeze > requirements.txt
     # Install cyclonedx to create sbom
-    pip install cyclonedx-bom
+    pip install cyclonedx-bom --no-cache-dir
     #3. Run it and it will generate sbom in current directory
     pip show cyclonedx-bom
     echo $PATH
-    /home/vsts/.local/lib/python2.7/site-packages/cyclonedx-py -i $DIR -o $DIR
+    cyclonedx-py -i $DIR -o $DIR
     ls -ltr $DIR
     cat $DIR/bom.xml
 }
