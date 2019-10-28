@@ -88,12 +88,12 @@ case $TYPE in
         python_tool_install ;
         pip freeze > requirements.txt
         # Install cyclonedx to create sbom
-        pip install cyclonedx-bom --no-cache-dir ;
+        python -m pip install --user cyclonedx-bom ;
         #3. Run it and it will generate sbom in current directory
         pip show cyclonedx-bom ;
         echo $PATH ;
         cyclonedx-py -i $DIR -o $DIR ;
-        ls -ltr /home/vsts/.local/lib/python2.7/
+        ls -ltr /home/vsts/.local/lib/python2.7/site-packages/
         cat $DIR/bom.xml
         ;;
 
