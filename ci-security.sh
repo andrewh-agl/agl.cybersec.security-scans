@@ -3,10 +3,16 @@ set -x
 
 # Functions
 python_tool_install() {
+    # Install python3
+    sudo apt-get install software-properties-common
+    sudo add-apt-repository ppa:deadsnakes/ppa
+    sudo apt-get update
+    sudo apt-get install python3.6
+    python3 --version
     # Install curl
     sudo apt-get update
     sudo apt-get install curl
-    sudo apt install python-pip
+    sudo apt install python3-pip
     pip install wheel
     pip --version
     export PATH="$PATH:~/.local/bin"
