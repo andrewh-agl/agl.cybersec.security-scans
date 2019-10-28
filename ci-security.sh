@@ -16,7 +16,7 @@ python() {
     #3. Run it and it will generate sbom in current directory
     pip show cyclonedx-bom
     echo $PATH
-    cyclonedx-bom -i $DIR -o $DIR
+    python cyclonedx-py -i $DIR -o $DIR
     ls -ltr $DIR
     cat $DIR/bom.xml
 }
