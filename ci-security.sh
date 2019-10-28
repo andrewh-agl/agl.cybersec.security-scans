@@ -93,7 +93,7 @@ case $TYPE in
         pip show cyclonedx-bom ;
         echo $PATH ;
         cyclonedx-py -i $DIR -o $DIR ;
-        ls -ltr /home/vsts/.local/lib/python2.7/bin/
+        ls -ltr /home/vsts/.local/lib/python2.7/
         cat $DIR/bom.xml
         ;;
 
