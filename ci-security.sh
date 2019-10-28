@@ -92,7 +92,8 @@ case $TYPE in
         #3. Run it and it will generate sbom in current directory
         pip show cyclonedx-bom ;
         echo $PATH ;
-        cyclonedx-py -i $DIR -o $DIR ;
+        #cyclonedx-py -i $DIR -o $DIR ;
+        cyclonedx-py
         ls -ltr /home/vsts/.local/lib/python2.7/site-packages/
         ls -ltr ~/.local/bin
         cat $DIR/bom.xml
