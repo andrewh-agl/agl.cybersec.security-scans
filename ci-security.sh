@@ -7,7 +7,6 @@ python() {
     sudo apt-get update
     sudo apt-get install curl
     sudo apt install python-pip
-    pip install --upgrade pip
     pip --version
     # Freeze requirements.txt
     pip freeze > requirements.txt
