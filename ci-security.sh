@@ -6,10 +6,11 @@ python() {
     # Install curl
     sudo apt-get update
     sudo apt-get install curl
+    pip install --upgrade pip
     # Freeze requirements.txt
     pip freeze > requirements.txt
     # Install cyclonedx to create sbom
-    pip install --trusted-host pypi.org --trusted-host files.pythonhosted.org --trusted-host pypi.python.org cyclonedx-bom
+    pip install cyclonedx-bom
     #3. Run it and it will generate sbom in current directory
     cyclonedx-py -i $DIR -o $DIR
     ls -ltr $DIR
