@@ -2,7 +2,7 @@
 set -x
 
 # Functions
-python() {
+python_tool_install() {
     # Install curl
     sudo apt-get update
     sudo apt-get install curl
@@ -10,15 +10,15 @@ python() {
     pip --version
     export PATH="$PATH:/usr/lib/python2.7"
     # Freeze requirements.txt
-    pip freeze > requirements.txt
-    # Install cyclonedx to create sbom
-    pip install cyclonedx-bom --no-cache-dir
-    #3. Run it and it will generate sbom in current directory
-    pip show cyclonedx-bom
-    echo $PATH
-    python cyclonedx-py -i $DIR -o $DIR
-    ls -ltr $DIR
-    cat $DIR/bom.xml
+    # pip freeze > requirements.txt
+    # # Install cyclonedx to create sbom
+    # pip install cyclonedx-bom --no-cache-dir
+    # #3. Run it and it will generate sbom in current directory
+    # pip show cyclonedx-bom
+    # echo $PATH
+    # python cyclonedx-py -i $DIR -o $DIR
+    # ls -ltr $DIR
+    # cat $DIR/bom.xml
 }
 
 dotnet_tool_install() {
@@ -84,7 +84,16 @@ case $TYPE in
 
     "Python")
         echo "Hello python!" ;
-        python
+        python_tool_install ;
+        pip freeze > requirements.txt
+        # Install cyclonedx to create sbom
+        pip install cyclonedx-bom --no-cache-dir ;
+        #3. Run it and it will generate sbom in current directory
+        pip show cyclonedx-bom ;
+        echo $PATH ;
+        python cyclonedx-py -i $DIR -o $DIR ;
+        ls -ltr $DIR ;
+        cat $DIR/bom.xml
         ;;
 
     *)
