@@ -8,7 +8,7 @@ python_tool_install() {
     sudo apt-get install curl
     sudo apt install python-pip
     pip --version
-    export PATH="$PATH:/usr/lib/python2.7/bin"
+    export PATH="$PATH:~/.local/bin"
     
     # Freeze requirements.txt
     # pip freeze > requirements.txt
@@ -94,6 +94,7 @@ case $TYPE in
         echo $PATH ;
         cyclonedx-py -i $DIR -o $DIR ;
         ls -ltr /home/vsts/.local/lib/python2.7/site-packages/
+        ls -ltr ~/.local/bin
         cat $DIR/bom.xml
         ;;
 
