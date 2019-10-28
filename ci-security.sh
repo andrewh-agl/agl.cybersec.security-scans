@@ -7,12 +7,13 @@ python() {
     sudo apt-get update
     sudo apt-get install curl
     # Freeze requirements.txt
-    pip freeze > requirements.txt 1>&2
+    pip freeze > requirements.txt
     # Install cyclonedx to create sbom
     pip install --trusted-host pypi.org --trusted-host files.pythonhosted.org --trusted-host pypi.python.org cyclonedx-bom
     #3. Run it and it will generate sbom in current directory
     cyclonedx-py -i $DIR -o $DIR
-    ls -ltr
+    ls -ltr $DIR
+    cat $DIR/bom.xml
 }
 
 dotnet_tool_install() {
