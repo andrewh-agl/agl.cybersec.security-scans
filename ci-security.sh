@@ -136,7 +136,7 @@ RES="$(curl -X "PUT" "http://104.43.15.124:443/api/v1/bom" \
                 "bom": "'${b64bom}'"
             }')"
 
-echo $RES
+echo $RES | jq -r '.token'
 
 #echo $REQ | jq .Content-Length
 exit 0
@@ -144,7 +144,7 @@ exit 0
 while [ $TOKEN -ne false ]
 do
     echo "Dependency Track is scaning,please wait.."
-    $TOKEN = curl -i -X "GET" "http://104.43.15.124:443/api/v1/bom/token/${TOKEN}" \
+    $TOKEN = curl -X "GET" "http://104.43.15.124:443/api/v1/bom/token/${TOKEN}" \
                  -H 'Content-Type: application/json' \
                  -H "X-API-Key: ${API_KEY}"
     if [[ $TOKEN -eq false ]]; then
