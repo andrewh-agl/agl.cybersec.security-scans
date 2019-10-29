@@ -128,7 +128,7 @@ echo $b64bom
 #         -F "project=${PROJECT_UUID}" \
 #         -F "bom=${b64bom}"
 
-RES="$(curl -X "PUT" "http://104.43.15.124:443/api/v1/bom" \
+RES="$(curl -i -X "PUT" "http://104.43.15.124:443/api/v1/bom" \
          -H 'Content-Type: application/json' \
          -H "X-API-Key: ${API_KEY}" \
          -d '{
