@@ -135,8 +135,8 @@ echo $b64bom
                 "project": "'${PROJECT_UUID}'",
                 "bom": "'${b64bom}'"
             }' \
-            grep -Fi body
-            
+            | grep -Fi body
+
 #echo $REQ | jq .Content-Length
 exit 0
 # Pool DT and pull results when ready
