@@ -128,13 +128,15 @@ echo $b64bom
 #         -F "project=${PROJECT_UUID}" \
 #         -F "bom=${b64bom}"
 
-    curl -o /dev/null -X "PUT" "http://104.43.15.124:443/api/v1/bom" \
+    curl -X "PUT" "http://104.43.15.124:443/api/v1/bom" \
          -H 'Content-Type: application/json' \
          -H "X-API-Key: ${API_KEY}" \
          -d '{
                 "project": "'${PROJECT_UUID}'",
                 "bom": "'${b64bom}'"
-            }' 
+            }' \
+            grep -Fi body
+            
 #echo $REQ | jq .Content-Length
 exit 0
 # Pool DT and pull results when ready
