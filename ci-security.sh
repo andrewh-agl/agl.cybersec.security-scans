@@ -139,7 +139,7 @@ RES="$(curl -X "PUT" "http://104.43.15.124:443/api/v1/bom" \
 TOKEN=$(echo $RES | jq -r '.token')
 
 # Pool DT and pull results when ready
-if [[ -z $TOKEN ]] then
+if [[ -z $TOKEN ]]; then
     echo "BOM upload failed. Check error: ${RES}"
 else 
     while :
