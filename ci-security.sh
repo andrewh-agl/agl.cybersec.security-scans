@@ -136,22 +136,32 @@ RES="$(curl -X "PUT" "http://104.43.15.124:443/api/v1/bom" \
                 "bom": "'${b64bom}'"
             }')"
 
-echo $RES | jq -r '.token'
+TOKEN=$(echo $RES | jq -r '.token')
 
-#echo $REQ | jq .Content-Length
-exit 0
 # Pool DT and pull results when ready
-while [ $TOKEN -ne false ]
-do
-    echo "Dependency Track is scaning,please wait.."
-    $TOKEN = curl -X "GET" "http://104.43.15.124:443/api/v1/bom/token/${TOKEN}" \
-                 -H 'Content-Type: application/json' \
-                 -H "X-API-Key: ${API_KEY}"
-    if [[ $TOKEN -eq false ]]; then
-        echo "Scanning..Done!"
-        FINDINGS = curl -i -X "GET" "http://104.43.15.124:443/api/v1/finding/project/${PROJECT_UUID}" \
-                 -H 'Content-Type: application/json' \
-                 -H "X-API-Key: ${API_KEY}"
+if [[ -z $TOKEN ]] then
+    echo "BOM upload failed. Check error: ${RES}"
+else 
+    while :
+    do
+        echo "Dependency Track is scaning,please wait.."
+        local RESULTS="$(curl -X "GET" "http://104.43.15.124:443/api/v1/bom/token/${TOKEN}" \
+                    -H 'Content-Type: application/json' \
+                    -H "X-API-Key: ${API_KEY}")"
+        processing=$(echo $RESULT | jq -r '.processing')
+        if [[ $processing -eq false ]]; then
+            echo "Scanning..Done!"
+            FINDINGS="$(curl -X "GET" "http://104.43.15.124:443/api/v1/finding/project/${PROJECT_UUID}" \
+                    -H 'Content-Type: application/json' \
+                    -H "X-API-Key: ${API_KEY}")"
+            break
+        else
+            continue
+        fi
+    done 
+fi
+
+echo $FINDINGS
 
 
 
