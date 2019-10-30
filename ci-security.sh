@@ -121,7 +121,7 @@ case $TYPE in
     "Node")
         echo "Hello node! Let me setup the env..";
         node_install ;
-        npm install -g @cyclonedx/bom ;
+        sudo npm install -g @cyclonedx/bom ;
         cyclonedx-bom -o $DIR/bom.xml ;
         cat $DIR/bom.xml
      ;;
