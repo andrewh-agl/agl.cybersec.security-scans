@@ -145,7 +145,7 @@ else
     while :
     do
         echo "Dependency Track is scaning,please wait.."
-        local RESULTS="$(curl -X "GET" "http://104.43.15.124:443/api/v1/bom/token/${TOKEN}" \
+        RESULTS="$(curl -X "GET" "http://104.43.15.124:443/api/v1/bom/token/${TOKEN}" \
                     -H 'Content-Type: application/json' \
                     -H "X-API-Key: ${API_KEY}")"
         processing=$(echo $RESULT | jq -r '.processing')
