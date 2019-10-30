@@ -149,7 +149,7 @@ else
                     -H 'Content-Type: application/json' \
                     -H "X-API-Key: ${API_KEY}")"
         processing=$(echo $RESULTS | jq -r '.processing')
-        if [[ ! $processing ]]; then
+        if [[ $processing = false ]]; then
             echo "Scanning..Done!"
             FINDINGS="$(curl -X "GET" "http://104.43.15.124:443/api/v1/finding/project/${PROJECT_UUID}" \
                     -H 'Content-Type: application/json' \
