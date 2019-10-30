@@ -118,7 +118,7 @@ case $TYPE in
         cat $DIR/bom.xml
         ;;
 
-    "NodeJS")
+    "Node")
         echo "Hello node! Let me setup the env..";
         node_install ;
         npm install -g @cyclonedx/bom ;
