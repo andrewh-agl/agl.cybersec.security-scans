@@ -18,17 +18,6 @@ python_tool_install() {
     pip install wheel
     pip --version
     export PATH="$PATH:~/.local/bin"
-    
-    # Freeze requirements.txt
-    # pip freeze > requirements.txt
-    # # Install cyclonedx to create sbom
-    # pip install cyclonedx-bom --no-cache-dir
-    # #3. Run it and it will generate sbom in current directory
-    # pip show cyclonedx-bom
-    # echo $PATH
-    # python cyclonedx-py -i $DIR -o $DIR
-    # ls -ltr $DIR
-    # cat $DIR/bom.xml
 }
 
 dotnet_tool_install() {
@@ -37,43 +26,15 @@ dotnet_tool_install() {
     sudo dpkg -i packages-microsoft-prod.deb
     # Install .NET SDK
     sudo add-apt-repository universe
-    #sudo apt-get update
-    #chmod u+x ./dotnet-install.sh
-    #./dotnet-install.sh -c Current
-    # sudo apt-get install --ignore-missing apt-transport-https
-    # sudo apt-get update
-    # sudo apt-get install --ignore-missing dotnet-sdk-3.0
-    # if [ $? -eq 0 ]; then
-    #    sudo -i dpkg --purge packages-microsoft-prod && sudo dpkg -i packages-microsoft-prod.deb
-    #    sudo apt-get update
-    #    sudo apt-get install dotnet-sdk-3.0
-    # fi
-    # sudo apt-get install -y gpg
-    # wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.asc.gpg
-    # sudo mv microsoft.asc.gpg /etc/apt/trusted.gpg.d/
-    # wget -q https://packages.microsoft.com/config/ubuntu/18.04/prod.list
-    # sudo mv prod.list /etc/apt/sources.list.d/microsoft-prod.list
-    # sudo chown root:root /etc/apt/trusted.gpg.d/microsoft.asc.gpg
-    # sudo chown root:root /etc/apt/sources.list.d/microsoft-prod.list
     sudo apt-get install -y apt-transport-https
     sudo apt-get update
     sudo apt-get install dotnet-sdk-3.0
-    # Install CycloneDX
-    # if [[ $? == 0 ]]; then
-    #     dotnet tool install --global CycloneDX
-    #     #dotnet tool update --global CycloneDX
-    #     dotnet CycloneDX $DIR -o $DIR
-    # fi
 }
 
 node_install() {
     sudo apt-get install curl
     curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
     sudo apt-get install nodejs && node -v && npm -v
-    # if [[ $? -eq 0 ]]; then
-    #     npm install -g @cyclonedx/bom
-    # else
-    #     echo "Failed to install cyclonedx.Error: $?" 
 }
 
 # Set directory to search
@@ -122,6 +83,7 @@ case $TYPE in
         echo "Hello node! Let me setup the env..";
         node_install ;
         sudo npm install -g @cyclonedx/bom ;
+        npm install
         cyclonedx-bom -o $DIR/bom.xml ;
         cat $DIR/bom.xml
      ;;
