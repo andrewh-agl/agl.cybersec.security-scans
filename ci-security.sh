@@ -1,5 +1,7 @@
 #!/bin/bash
 set -x
+# Exit on error
+set -e
 
 # Functions
 python_tool_install() {
@@ -64,6 +66,15 @@ dotnet_tool_install() {
     # fi
 }
 
+node_install() {
+    sudo apt-get install curl
+    curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
+    sudo apt-get install nodejs && node -v && npm -v
+    # if [[ $? -eq 0 ]]; then
+    #     npm install -g @cyclonedx/bom
+    # else
+    #     echo "Failed to install cyclonedx.Error: $?" 
+}
 
 # Set directory to search
 DIR=$1
@@ -74,9 +85,9 @@ if [[ -n $(find $DIR -name '*.csproj' -o -name '*.vbproj' -o -name 'packages.con
 elif [[ -n $(find $DIR -name '*.py') ]]; then
     echo "Python project"
     TYPE="Python"
-else
-    echo "Project type not supported."
-    #exit 1
+elif [[ -n $(find $DIR -name 'package.json' -o -name 'yarn.lock') ]]; then
+    echo "NodeJS project"
+    TYPE="Node"
 fi
 
 case $TYPE in
@@ -107,8 +118,18 @@ case $TYPE in
         cat $DIR/bom.xml
         ;;
 
+    "NodeJS")
+        echo "Hello node! Let me setup the env..";
+        node_install ;
+        npm install -g @cyclonedx/bom ;
+        cyclonedx-bom -o $DIR/bom.xml ;
+        cat $DIR/bom.xml
+     ;;
+
     *)
-        echo ":("
+        echo ":(" ;
+        echo "Project type not supported. Only .NET, NodeJS and Python are supported." ;
+        exit 1
 esac
 #exit 0
 
