@@ -108,13 +108,20 @@ API_KEY=${TEAM_KEY:-$DEFAULT_KEY}
 # Generate base64 encoded bom without any whitespaces
 b64bom=$(base64 -w 0 $DIR/bom.xml)
 mv $DIR/bom.xml .
-cat bom.xml
+
 #echo $b64bom
 #5. Post sbom to depenedency track
+cat > payload.json <<__HERE__
+{
+  "project": ${PROJECT_UUID},
+  "scan": "$(cat bom.xml |base64 -w 0 -)"
+}
+__HERE__
+
 RES=$(curl -i -X "PUT" "http://104.43.15.124:443/api/v1/bom" \
-        -H "Content-Type:text/xml;charset=UTF-8" \
+        -H "Content-Type: application/json" \
         -H "X-API-Key: ${API_KEY}" \
-        -d @bom.xml)
+        -d @payload.json)
 #        -F "project=${PROJECT_UUID}" \
 #        -F "bom=${b64bom}"
 
