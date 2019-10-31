@@ -89,7 +89,7 @@ case $TYPE in
         cd ..
         cyclonedx-bom -o bom.xml ;
         ls -ltr
-        cat $DIR/bom.xml
+        cat bom.xml
      ;;
 
     *)
