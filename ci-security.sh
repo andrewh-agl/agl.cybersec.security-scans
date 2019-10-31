@@ -89,7 +89,7 @@ case $TYPE in
         pwd ;    
         cd .. ;
         cyclonedx-bom -o bom.xml ;
-        popd $DIR ;
+        popd ;
         ls -ltr
         #cat bom.xml
      ;;
