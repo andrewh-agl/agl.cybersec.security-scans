@@ -86,12 +86,9 @@ case $TYPE in
         cd $DIR
         npm install ;
         ls -ltr ;
-        #pushd $DIR ;
-        #pwd ;    
-        #cd .. ;
         cyclonedx-bom -o bom.xml ;
-        #popd ;
         ls -ltr
+        cd security-scans
         #cat bom.xml
      ;;
 
