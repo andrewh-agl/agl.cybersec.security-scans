@@ -107,21 +107,29 @@ PROJECT_UUID=${PROJECT_UUID:-$DEFAULT_UUID}
 API_KEY=${TEAM_KEY:-$DEFAULT_KEY}
 # Generate base64 encoded bom without any whitespaces
 b64bom=$(base64 -w 0 $DIR/bom.xml)
+mv $DIR/bom.xml .
 #echo $b64bom
 #5. Post sbom to depenedency track
-# curl -i -X "POST" "http://104.43.15.124:443/api/v1/bom" \
+RES=curl -i -X "POST" "http://104.43.15.124:443/api/v1/bom" \
+        -H "Content-Type:text/xml;charset=UTF-8" \
+        -H "X-API-Key: ${API_KEY}" \
+        -d @bom.xml
+#        -F "project=${PROJECT_UUID}" \
+#        -F "bom=${b64bom}"
+
+# RES=curl -i -X "POST" "http://104.43.15.124:443/api/v1/bom" \
 #         -H "Content-Type:multipart/form-data" \
 #         -H "X-API-Key: ${API_KEY}" \
 #         -F "project=${PROJECT_UUID}" \
 #         -F "bom=${b64bom}"
 
-RES="$(curl -X "PUT" "http://104.43.15.124:443/api/v1/bom" \
-         -H 'Content-Type: application/json' \
-         -H "X-API-Key: ${API_KEY}" \
-         -d '{
-                "project": "'${PROJECT_UUID}'",
-                "bom": "'${b64bom}'"
-            }')"
+# RES="$(curl -X "PUT" "http://104.43.15.124:443/api/v1/bom" \
+#          -H 'Content-Type: application/json' \
+#          -H "X-API-Key: ${API_KEY}" \
+#          -d '{
+#                 "project": "'${PROJECT_UUID}'",
+#                 "bom": "'${b64bom}'"
+#             }')"
 
 TOKEN=$(echo $RES | jq -r '.token')
 
