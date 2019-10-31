@@ -86,7 +86,7 @@ case $TYPE in
         npm install $DIR
         ls -ltr $DIR
         cat $DIR/package-lock.json
-        cyclonedx-bom -a $DIR -o $DIR/bom.xml ;
+        ../cyclonedx-bom -o bom.xml ;
         ls -ltr
         cat $DIR/bom.xml
      ;;
