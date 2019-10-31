@@ -83,13 +83,14 @@ case $TYPE in
         echo "Hello node! Let me setup the env..";
         node_install ;
         sudo npm install -g @cyclonedx/bom ;
-        npm install $DIR ;
-        ls -ltr $DIR ;
-        pushd $DIR ;
-        pwd ;    
-        cd .. ;
+        cd $DIR
+        npm install ;
+        ls -ltr ;
+        #pushd $DIR ;
+        #pwd ;    
+        #cd .. ;
         cyclonedx-bom -o bom.xml ;
-        popd ;
+        #popd ;
         ls -ltr
         #cat bom.xml
      ;;
