@@ -107,7 +107,7 @@ PROJECT_UUID=${PROJECT_UUID:-$DEFAULT_UUID}
 API_KEY=${TEAM_KEY:-$DEFAULT_KEY}
 # Generate base64 encoded bom without any whitespaces
 b64bom=$(base64 -w 0 $DIR/bom.xml)
-echo $b64bom
+#echo $b64bom
 #5. Post sbom to depenedency track
 # curl -i -X "POST" "http://104.43.15.124:443/api/v1/bom" \
 #         -H "Content-Type:multipart/form-data" \
