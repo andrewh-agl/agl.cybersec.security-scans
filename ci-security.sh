@@ -1,7 +1,7 @@
 #!/bin/bash
 set -x
 # Exit on error
-set -e
+#set -e
 
 # Functions
 python_tool_install() {
