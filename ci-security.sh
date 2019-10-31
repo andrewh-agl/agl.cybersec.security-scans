@@ -85,10 +85,10 @@ case $TYPE in
         sudo npm install -g @cyclonedx/bom ;
         npm install $DIR ;
         ls -ltr $DIR ;
-        cat $DIR/package-lock.json ;
+        #cat $DIR/package-lock.json ;
         cd .. ;
         cyclonedx-bom -o bom.xml ;
-        cd - ;
+        cd $DIR
         #ls -ltr
         #cat bom.xml
      ;;
