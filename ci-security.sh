@@ -111,19 +111,18 @@ mv $DIR/bom.xml .
 
 #echo $b64bom
 #5. Post sbom to depenedency track
-cat > payload.json <<__HERE__
+`cat > payload.json <<__HERE__
 {
   "project": "${PROJECT_UUID}",
   "scan": "$(cat bom.xml |base64 -w 0 -)"
 }
 __HERE__
 
-cat payload.json
 
 RES=$(curl -i -X "PUT" "http://104.43.15.124:443/api/v1/bom" \
         -H "Content-Type: application/json" \
         -H "X-API-Key: ${API_KEY}" \
-        -d @payload.json)
+        -d @payload.json)`
 #        -F "project=${PROJECT_UUID}" \
 #        -F "bom=${b64bom}"
 
