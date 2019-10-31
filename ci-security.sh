@@ -139,7 +139,7 @@ echo $RES
 #                 "bom": "'${b64bom}'"
 #             }')"
 
-TOKEN=$(echo $RES | jq -r '.token')
+TOKEN=$(echo $RES | jq -r 'token')
 
 # Pool DT and pull results when ready
 if [[ -z $TOKEN ]]; then
