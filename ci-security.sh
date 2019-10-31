@@ -88,6 +88,7 @@ case $TYPE in
         cat $DIR/package-lock.json ;
         cd .. ;
         cyclonedx-bom -o bom.xml ;
+        cd - ;
         #ls -ltr
         #cat bom.xml
      ;;
