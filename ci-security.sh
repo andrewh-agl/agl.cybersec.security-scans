@@ -114,7 +114,7 @@ mv $DIR/bom.xml .
 `cat > payload.json <<__HERE__
 {
   "project": "${PROJECT_UUID}",
-  "scan": "$(cat bom.xml |base64 -w 0 -)"
+  "bom": "$(cat bom.xml |base64 -w 0 -)"
 }
 __HERE__
 
