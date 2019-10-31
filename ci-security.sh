@@ -85,7 +85,8 @@ case $TYPE in
         sudo npm install -g @cyclonedx/bom ;
         npm install
         ls -ltr $DIR
-        cyclonedx-bom -o $DIR/bom.xml ;
+        cyclonedx-bom -o bom.xml ;
+        ls -ltr
         cat $DIR/bom.xml
      ;;
 
