@@ -118,10 +118,10 @@ cat > payload.json <<__HERE__
 }
 __HERE__
 
-RES=$(curl -i -X "PUT" "http://104.43.15.124:443/api/v1/bom" \
+RES="$(curl -i -X "PUT" "http://104.43.15.124:443/api/v1/bom" \
         -H "Content-Type: application/json" \
         -H "X-API-Key: ${API_KEY}" \
-        -d @payload.json)
+        -d @payload.json)"
 #        -F "project=${PROJECT_UUID}" \
 #        -F "bom=${b64bom}"
 
@@ -130,7 +130,7 @@ RES=$(curl -i -X "PUT" "http://104.43.15.124:443/api/v1/bom" \
 #         -H "X-API-Key: ${API_KEY}" \
 #         -F "project=${PROJECT_UUID}" \
 #         -F "bom=${b64bom}"
-echo $RES
+#echo $RES
 # RES="$(curl -X "PUT" "http://104.43.15.124:443/api/v1/bom" \
 #          -H 'Content-Type: application/json' \
 #          -H "X-API-Key: ${API_KEY}" \
@@ -139,7 +139,7 @@ echo $RES
 #                 "bom": "'${b64bom}'"
 #             }')"
 
-TOKEN=$(echo $RES | jq -r 'token')
+TOKEN=$(echo $RES | jq -r '.token')
 
 # Pool DT and pull results when ready
 if [[ -z $TOKEN ]]; then
