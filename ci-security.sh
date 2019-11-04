@@ -160,23 +160,25 @@ fi
 # Search through findings and report results here
 
 #echo $FINDINGS
-echo $FINDINGS |jq -r '.[].vulnerability.severity'
-c=0; h=0; m=0; l=0;
+#echo $FINDINGS |jq -r '.[].vulnerability.severity'
+c=0; h=0; m=0; l=0; u=0;
 for severity in $(echo $FINDINGS |jq -r '.[].vulnerability.severity')
 do
     case $severity in
-        "Critical")
+        "CRITICAL")
             c=$((c+1))
         ;;
-        "High")
+        "HIGH")
             h=$((h+1)) 
         ;;
-        "Medium")
+        "MEDIUM")
             m=$((m+1))
         ;;
-        "Low")
+        "LOW")
             l=$((l+1))
         ;;
+        "UNASSIGNED")
+            u=$((u+1))
     esac
 done
 
@@ -186,4 +188,5 @@ echo "Critical: $c"
 echo "High: $h"
 echo "Medium: $m"
 echo "Low: $l"
+echo "Unassigned: $u"
 
