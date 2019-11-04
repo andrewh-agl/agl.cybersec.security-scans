@@ -165,6 +165,7 @@ do
     case $severity in
         "Critical")
             c=$((c+1))
+        ;;
         "High")
             h=$((h+1)) 
         ;;
