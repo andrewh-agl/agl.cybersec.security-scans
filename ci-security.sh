@@ -122,15 +122,8 @@ RES="$(curl -X "PUT" "http://104.43.15.124:443/api/v1/bom" \
         -H "Content-Type: application/json" \
         -H "X-API-Key: ${API_KEY}" \
         -d @payload.json)"
-#        -F "project=${PROJECT_UUID}" \
-#        -F "bom=${b64bom}"
 
-# RES=curl -i -X "POST" "http://104.43.15.124:443/api/v1/bom" \
-#         -H "Content-Type:multipart/form-data" \
-#         -H "X-API-Key: ${API_KEY}" \
-#         -F "project=${PROJECT_UUID}" \
-#         -F "bom=${b64bom}"
-#echo $RES
+
 # RES="$(curl -X "PUT" "http://104.43.15.124:443/api/v1/bom" \
 #          -H 'Content-Type: application/json' \
 #          -H "X-API-Key: ${API_KEY}" \
@@ -138,7 +131,7 @@ RES="$(curl -X "PUT" "http://104.43.15.124:443/api/v1/bom" \
 #                 "project": "'${PROJECT_UUID}'",
 #                 "bom": "'${b64bom}'"
 #             }')"
-
+#echo $RES
 TOKEN=$(echo $RES | jq -r '.token')
 
 # Pool DT and pull results when ready
@@ -164,8 +157,30 @@ else
     done 
 fi
 
+# Search through findings and report results here
+
 echo $FINDINGS
+for severity in $(echo $FINDINGS |jq -r '.vulnerability[].severity')
+do
+    case $severity in
+        "Critical")
+            c=$((c+1))
+        "High")
+            h=$((h+1)) 
+        ;;
+        "Medium")
+            m=$((m+1))
+        ;;
+        "Low")
+            l=$((l+1))
+        ;;
+    esac
+done
 
-
-
+# Output results
+echo "Number of vulnerabilities:"
+echo "Critical: $c"
+echo "High: $h"
+echo "Medium: $m"
+echo "Low: $l"
 
