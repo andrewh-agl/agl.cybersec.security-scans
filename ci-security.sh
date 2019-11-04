@@ -160,6 +160,7 @@ fi
 # Search through findings and report results here
 
 echo $FINDINGS
+c=0; h=0; m=0; l=0;
 for severity in $(echo $FINDINGS |jq -r '.vulnerability[].severity')
 do
     case $severity in
