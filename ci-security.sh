@@ -104,7 +104,7 @@ DEFAULT_UUID="2d395a41-d684-45c7-a8f9-92d602a43223"
 DEFAULT_KEY="mJaqkPN9JFzFwAKGffU1uN6CuW5Uu5dU"
 PROJECT_UUID=${PROJECT_UUID:-$DEFAULT_UUID}
 
-API_KEY=${TEAM_KEY:-$DEFAULT_KEY}
+API_KEY=${API_KEY:-$DEFAULT_KEY}
 # Generate base64 encoded bom without any whitespaces
 #b64bom=$(base64 -w 0 $DIR/bom.xml)
 mv $DIR/bom.xml .
