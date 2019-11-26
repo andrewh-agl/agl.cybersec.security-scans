@@ -99,9 +99,11 @@ case $TYPE in
 esac
 #exit 0
 
+# Dep-Track URL
+DT_URL="https://deptrack.australiasoutheast.cloudapp.azure.com/api/v1"
 # Read project UUID from env
 DEFAULT_UUID="2d395a41-d684-45c7-a8f9-92d602a43223"
-DEFAULT_KEY="mJaqkPN9JFzFwAKGffU1uN6CuW5Uu5dU"
+DEFAULT_KEY="6esBJT96rlTNMfivA09hyikpHPNtV7Rz"
 PROJECT_UUID=${PROJECT_UUID:-$DEFAULT_UUID}
 
 API_KEY=${API_KEY:-$DEFAULT_KEY}
@@ -117,12 +119,17 @@ cat > payload.json <<__HERE__
   "bom": "$(cat bom.xml |base64 -w 0 -)"
 }
 __HERE__
+# Working
+# RES="$(curl -X "PUT" "http://104.43.15.124:443/api/v1/bom" \
+#         -H "Content-Type: application/json" \
+#         -H "X-API-Key: ${API_KEY}" \
+#         -d @payload.json)"
 
-RES="$(curl -X "PUT" "http://104.43.15.124:443/api/v1/bom" \
+# New
+RES="$(curl -k -X "PUT" "${DT_URL}/bom" \
         -H "Content-Type: application/json" \
         -H "X-API-Key: ${API_KEY}" \
         -d @payload.json)"
-
 
 # RES="$(curl -X "PUT" "http://104.43.15.124:443/api/v1/bom" \
 #          -H 'Content-Type: application/json' \
@@ -141,13 +148,23 @@ else
     while :
     do
         echo "Dependency Track is scaning,please wait.."
-        RESULTS="$(curl -X "GET" "http://104.43.15.124:443/api/v1/bom/token/${TOKEN}" \
+        # Working
+        # RESULTS="$(curl -X "GET" "http://104.43.15.124:443/api/v1/bom/token/${TOKEN}" \
+        #             -H 'Content-Type: application/json' \
+        #             -H "X-API-Key: ${API_KEY}")"
+        # New
+        RESULTS="$(curl -k -X "GET" "${DT_URL}/bom/token/${TOKEN}" \
                     -H 'Content-Type: application/json' \
                     -H "X-API-Key: ${API_KEY}")"
         processing=$(echo $RESULTS | jq -r '.processing')
         if [[ $processing = false ]]; then
             echo "Scanning..Done!"
-            FINDINGS="$(curl -X "GET" "http://104.43.15.124:443/api/v1/finding/project/${PROJECT_UUID}" \
+            # Working
+            # FINDINGS="$(curl -X "GET" "http://104.43.15.124:443/api/v1/finding/project/${PROJECT_UUID}" \
+            #         -H 'Content-Type: application/json' \
+            #         -H "X-API-Key: ${API_KEY}")"
+            # New
+            FINDINGS="$(curl -k -X "GET" "${DT_URL}/finding/project/${PROJECT_UUID}" \
                     -H 'Content-Type: application/json' \
                     -H "X-API-Key: ${API_KEY}")"
             break
