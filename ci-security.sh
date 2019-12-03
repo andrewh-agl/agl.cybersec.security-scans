@@ -111,7 +111,7 @@ API_KEY=${API_KEY:-$DEFAULT_KEY}
 #b64bom=$(base64 -w 0 $DIR/bom.xml)
 mv $DIR/bom.xml .
 
-cat bom.xml
+cat bom.xml 
 #echo $b64bom
 #5. Post sbom to depenedency track
 cat > payload.json <<__HERE__
