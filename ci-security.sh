@@ -111,7 +111,7 @@ API_KEY=${API_KEY:-$DEFAULT_KEY}
 #b64bom=$(base64 -w 0 $DIR/bom.xml)
 mv $DIR/bom.xml .
 
-cat bom.xml 
+#cat bom.xml 
 #echo $b64bom
 #5. Post sbom to depenedency track
 cat > payload.json <<__HERE__
@@ -139,7 +139,7 @@ RES="$(curl -k -X "PUT" "${DT_URL}/bom" \
 #                 "project": "'${PROJECT_UUID}'",
 #                 "bom": "'${b64bom}'"
 #             }')"
-echo $RES
+#echo $RES
 TOKEN=$(echo $RES | jq -r '.token')
 
 # Pool DT and pull results when ready
