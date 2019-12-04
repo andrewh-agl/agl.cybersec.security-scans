@@ -40,13 +40,13 @@ node_install() {
 # Set directory to search
 DIR=$1
 # Check project type: .NET (C# or cs) or python
-if [[ -n $(find $DIR -name '*.csproj' -o -name '*.vbproj' -o -name 'packages.config' -o -name '*.sln') ]]; then
+if [[ -n $(find $DIR -name "*.sln" -o -name "*.csproj" -o -name "*.vbproj" -o -name "packages.config") ]]; then
     echo "C# project"
     TYPE="C#"
-elif [[ -n $(find $DIR -name '*.py') ]]; then
+elif [[ -n $(find $DIR -name "*.py") ]]; then
     echo "Python project"
     TYPE="Python"
-elif [[ -n $(find $DIR -name 'package.json' -o -name 'yarn.lock') ]]; then
+elif [[ -n $(find $DIR -name "package.json" -o -name "yarn.lock") ]]; then
     echo "NodeJS project"
     TYPE="Node"
 fi
