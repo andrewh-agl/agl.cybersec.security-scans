@@ -39,7 +39,7 @@ node_install() {
 
 # Set directory to search
 DIR=$1
-SLN=$2
+#SLN=$2
 # Check project type: .NET (C# or cs) or python
 if [[ -n $(find $DIR -maxdepth 1 -type f  -name "*.sln" -o -name "*.csproj" -o -name "*.vbproj" -o -name "packages.config") ]]; then
     echo "C# project"
@@ -59,7 +59,8 @@ case $TYPE in
         dotnet --info
         dotnet tool install --tool-path . CycloneDX ;
         #./dotnet-CycloneDX --help
-        ./dotnet-CycloneDX $SLN -o $DIR
+        #./dotnet-CycloneDX $SLN -o $DIR
+        ./dotnet-CycloneDX $DIR -o $DIR
         cat $DIR/bom.xml
         ;;
 
