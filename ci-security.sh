@@ -1,5 +1,5 @@
 #!/bin/bash
-set -x
+#set -x
 # Exit on error
 set -e
 
@@ -37,24 +37,94 @@ node_install() {
     sudo apt-get install nodejs && node -v && npm -v
 }
 
-# Set directory to search
-DIR=$1
-#SLN=$2
-# Check project type: .NET (C# or cs) or python
-if [[ -n $(find $DIR -maxdepth 1 -type f  -name "*.sln" -o -name "*.csproj" -o -name "*.vbproj" -o -name "packages.config") ]]; then
-    echo "C# project"
-    TYPE="C#"
-elif [[ -n $(find $DIR -maxdepth 1 -type f -name "*.py") ]]; then
-    echo "Python project"
-    TYPE="Python"
-elif [[ -n $(find $DIR -maxdepth 1 -type f -name "package.json" -o -name "yarn.lock") ]]; then
-    echo "NodeJS project"
-    TYPE="Node"
-fi
 
+# Show Usage
+usage() {
+cat << EOF  
+Usage: ./ci-security.sh <path-to-project-dir> -s [path-to-sln-file] 
+1. For .NET project
+    ./ci-security.sh <path-to-project-dir> -s <path-to-sln-file>
+    e.g.
+    ./ci-security.sh /src -s /src/project.sln
+
+2. For NPM project and Python project
+    ./ci-security.sh <path-to-project-dir>
+    e.g.
+    ./ci-security.sh /src
+Options:
+-h      Display help
+
+-s      Path to *.sln/*.csproj/project (required only for .NET project). 
+
+EOF
+}
+
+# Set SLN to null
+SLN=Null
+while getopts "s:" arg; do
+    case "${arg}" in
+        s)
+            SLN=${OPTARG}
+            ;;
+        *)
+            usage
+            ;;
+    esac
+done
+shift $((OPTIND-1))
+DIR=${1?$( usage )}
+echo "DIR = ${DIR}"
+
+if [[ "$SLN" != "Null"  ]]; then
+    # Validition for .NET projects
+    if [[ ! -z "${SLN}" ]]; then
+        echo "Path to SLN file = ${SLN}"
+        # It looks like a .net project, check file type
+        #filename=$(echo "${SLN##*/}")
+        filename=$(basename "$SLN" | sed -r 's|^(.*?)\.\w+$|\1|')
+        echo "filename = ${filename}"
+        #ext=$(echo "${SLN##*.}")
+        ext=$(echo "$SLN" | sed 's/^.*\.//')
+        echo "ext = ${ext}"
+        if [[ -z $filename || -z $ext ]]; then
+            echo "Missing filename or extension, please check .NET project path to sln file."
+            exit 1
+        fi
+        # Check if file exists
+        if [[ -n $(find $DIR -type f -name "${filename}.${ext}") ]]; then
+            # file exists, lets verify type
+            if [[ $ext == "sln" || $ext == "csproj" || $ext == "vbproj" ]]; then
+                echo ".NET project"
+                TYPE=".NET"
+            elif [[ $filename == "projects.config" ]]; then
+                echo ".NET project"
+                TYPE=".NET"
+            else
+                echo "Missing filename, .NET project supported filetypes are *.sln, *.csproj, *.vbproj & projects.config"
+                exit 1
+            fi
+        else
+            echo "Could not find ${filename}.${ext}, please check filename is correct."
+            exit 1
+        fi
+    else
+        echo "Path to sln file is empty"
+        exit 1
+    fi
+else
+    # Check project type: NPM and python
+    if [[ -n $(find $DIR -maxdepth 1 -type f -name "*.py") ]]; then
+        echo "Python project"
+        TYPE="Python"
+    elif [[ -n $(find $DIR -maxdepth 1 -type f -name "package.json" -o -name "yarn.lock") ]]; then
+        echo "NodeJS project"
+        TYPE="Node"
+    fi
+fi
+exit 0
 case $TYPE in
-    "C#")
-        echo "Hello C#!" ;
+    ".NET")
+        echo "Hello .NET!" ;
         dotnet_tool_install ;
         dotnet --info
         dotnet tool install --tool-path . CycloneDX ;
