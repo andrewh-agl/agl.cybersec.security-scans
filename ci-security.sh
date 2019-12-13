@@ -27,9 +27,9 @@ dotnet_tool_install() {
     # Install .NET SDK
     sudo rm -rf /var/lib/apt/lists/*
     sudo apt-get clean
+    sudo apt-get update
     sudo add-apt-repository universe
     sudo apt-get install -y apt-transport-https
-    sudo apt-get update
     sudo apt-get install dotnet-sdk-3.0
 }
 
