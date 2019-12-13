@@ -25,8 +25,6 @@ dotnet_tool_install() {
     wget -q https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb
     sudo dpkg -i packages-microsoft-prod.deb
     # Install .NET SDK
-    #sudo rm -rf /var/lib/apt/lists/*
-    sudo apt-get clean
     #sudo apt-get update
     sudo add-apt-repository universe
     sudo apt-get install -y apt-transport-https
@@ -34,7 +32,7 @@ dotnet_tool_install() {
 }
 
 node_install() {
-    sudo rm -rf /var/lib/apt/lists/*
+    #sudo rm -rf /var/lib/apt/lists/*
     sudo apt-get clean
     sudo apt-get install curl
     curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
