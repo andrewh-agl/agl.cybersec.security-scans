@@ -121,7 +121,7 @@ else
         TYPE="Node"
     fi
 fi
-exit 0
+
 case $TYPE in
     ".NET")
         echo "Hello .NET!" ;
