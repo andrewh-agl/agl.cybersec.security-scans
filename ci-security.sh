@@ -1,5 +1,5 @@
 #!/bin/bash
-#set -x
+set -x
 # Exit on error
 set -e
 
@@ -32,7 +32,7 @@ dotnet_tool_install() {
 }
 
 node_install() {
-    #sudo rm -rf /var/lib/apt/lists/*
+    sudo rm -rf /var/lib/apt/lists/*
     sudo apt-get clean
     sudo apt-get install curl
     curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
