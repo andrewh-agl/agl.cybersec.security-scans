@@ -34,6 +34,7 @@ dotnet_tool_install() {
 }
 
 node_install() {
+    sudo apt-get clean
     sudo apt-get install curl
     curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
     sudo apt-get install nodejs && node -v && npm -v
