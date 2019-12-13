@@ -33,6 +33,9 @@ dotnet_tool_install() {
 
 node_install() {
     sudo apt-get install curl
+    sudo apt-get remove nodejs npm
+    sudo apt-get update
+    sudo apt-get upgrade
     curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
     sudo apt-get update
     sudo apt-get install nodejs && node -v && npm -v
