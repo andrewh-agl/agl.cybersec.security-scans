@@ -25,11 +25,11 @@ dotnet_tool_install() {
     wget -q https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb
     sudo dpkg -i packages-microsoft-prod.deb
     # Install .NET SDK
-    #sudo rm -rf /var/lib/apt/lists/*
-    #sudo apt-get clean
-    sudo rm -rf /var/lib/apt/lists/partial
-    sudo apt-get update -o Acquire::CompressionTypes::Order::=gz
-    sudo apt-get update
+    sudo rm -rf /var/lib/apt/lists/*
+    sudo apt-get clean
+    #sudo rm -rf /var/lib/apt/lists/partial
+    #sudo apt-get update -o Acquire::CompressionTypes::Order::=gz
+    #sudo apt-get update
     sudo add-apt-repository universe
     sudo apt-get install -y apt-transport-https
     sudo apt-get install dotnet-sdk-3.0
