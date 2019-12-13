@@ -130,7 +130,7 @@ case $TYPE in
         dotnet tool install --tool-path . CycloneDX ;
         #./dotnet-CycloneDX --help
         #./dotnet-CycloneDX $SLN -o $DIR
-        ./dotnet-CycloneDX $DIR -o $DIR
+        ./dotnet-CycloneDX $SLN -o $DIR
         cat $DIR/bom.xml
         ;;
 
