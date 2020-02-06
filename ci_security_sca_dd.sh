@@ -174,14 +174,19 @@ esac
 
 # Dep-Track URL
 DT_URL="https://deptrack.australiasoutheast.cloudapp.azure.com/api/v1"
+# Dojo URL
 DD_URL="https://52.163.231.2/api/v2"
-# Read project UUID from env
-DEFAULT_UUID="2d395a41-d684-45c7-a8f9-92d602a43223"
-DEFAULT_KEY="6esBJT96rlTNMfivA09hyikpHPNtV7Rz"
-DD_KEY="6f1f60c9bf8161a16227470c09b53298b42ed62e" #Remove from code after development
-PROJECT_UUID=${PROJECT_UUID:-$DEFAULT_UUID}
+# Read values from env
+# Dep Track API Key and Project UUIDs are unique to Project/team
+DEFAULT_PROJECT_UUID="2d395a41-d684-45c7-a8f9-92d602a43223"
+DEFAULT_API_KEY="6esBJT96rlTNMfivA09hyikpHPNtV7Rz"
+# Dojo API key is common
+DD_API_KEY="6f1f60c9bf8161a16227470c09b53298b42ed62e" #Remove from code after development
 
-API_KEY=${API_KEY:-$DEFAULT_KEY}
+$DD_API_KEY="Token ${DD_API_KEY}"
+PROJECT_UUID=${PROJECT_UUID:-$DEFAULT_PROJECT_UUID}
+
+API_KEY=${API_KEY:-$DEFAULT_API_KEY}
 # Generate base64 encoded bom without any whitespaces
 mv $DIR/bom.xml .
 
@@ -251,7 +256,7 @@ json_export="$(curl -X "GET" "${DT_URL}/finding/project/${PROJECT_UUID}/export" 
             -H 'Accept: application/json' \ 
             -H "X-API-Key: ${API_KEY}")"
 if [ ! -z $json_export ]; then
-    echo $json_export>dep_track.json
+    echo $json_export>dep_track.json 1>&2
     # Import to Defect Dojo
     dd_upload
 
@@ -261,7 +266,8 @@ else
 fi
 
 dd_upload(){
-    local response
+    local product_list
+    local engagement_list
     ###
     #1. Find project by listing all products and matching product name to dep-track project name
     #2. If a match found, use the product ID
@@ -279,15 +285,23 @@ dd_upload(){
     ###
     
     # List products
-    product_list=$(curl curl -X GET "https://52.163.231.2/api/v2/products/?limit=1&offset=3" -H "accept: application/json" -H "X-CSRFToken: jZDeSMxaILyiNRoaFKB7GxGsOgYS1lqi1LOYED6yGUNnaje93o0obILIEcshhfBh")
+    product_list="$(curl -X GET "${DD_URL}/products/" \
+                -H "accept: application/json" \
+                -H "Authorization: 'Token ${DD_API_KEY}'")"
+    # List of engagements
+    engagement_list="$(curl -X GET "${DD_URL}/engagements/" \
+                -H "accept: application/json" \
+                -H "Authorization: 'Token ${DD_API_KEY}'")"
 
-
-
+    echo $product_list
+    echo $engagement_list
+    exit 0
+    # 
     # Upload
     response="$(curl -X POST "${DD_URL}/import-scan/" \ 
     -H "accept: application/json" \ 
     -H "Content-Type: multipart/form-data" \
-    -H "Authorization: Token ${DD_KEY}" \
+    -H "Authorization: 'Token ${DD_API_KEY}'" \
     -d {"scan_date":"2020-02-05","minimum_severity":"Info","active":"true","verified":"true", \
         "scan_type":"Dependency Track Finding Packaging Format (FPF) Export", \
         "file":{},"engagement":"5","close_old_findings":"false"})"
