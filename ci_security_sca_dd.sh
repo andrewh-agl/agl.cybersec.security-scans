@@ -199,10 +199,16 @@ cat > payload.json <<__HERE__
 __HERE__
 
 # New
-RES="$(curl -k -X "PUT" "${DT_URL}/bom" \
+RES="$(curl -i -k -X "PUT" "${DT_URL}/bom" \
         -H "Content-Type: application/json" \
         -H "X-API-Key: ${API_KEY}" \
         -d @payload.json)"
+http_status=$(echo $RES | grep HTTP | awk '{print $2}')
+echo http_status
+if [ ! $http_status -eq '200' ]; then
+    echo "Error ${http_status}: ${RES}"
+    exit 1
+fi
 
 TOKEN=$(echo $RES | jq -r '.token')
 
