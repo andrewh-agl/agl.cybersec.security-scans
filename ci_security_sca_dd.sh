@@ -1,5 +1,5 @@
 #!/bin/bash
-#set -x
+set -x
 # Exit on error
 set -e
 
@@ -181,7 +181,7 @@ DD_URL="https://52.163.231.2/api/v2"
 DEFAULT_PROJECT_UUID="2d395a41-d684-45c7-a8f9-92d602a43223"
 DEFAULT_API_KEY="6esBJT96rlTNMfivA09hyikpHPNtV7Rz"
 # Dojo API key is common
-DD_KEY="6f1f60c9bf8161a16227470c09b53298b42ed62e" #Remove from code after development
+DD_KEY="6f1f60c9bf8161a16227470c09b53298b42ed62e" 
 
 DD_API_KEY="Token ${DD_KEY}"
 PROJECT_UUID=${PROJECT_UUID:-$DEFAULT_PROJECT_UUID}
