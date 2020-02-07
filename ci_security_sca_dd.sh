@@ -209,13 +209,12 @@ echo $http_status
 #     echo "Error ${http_status}: ${RES}"
 #     exit 1
 # fi
-apt list --installed jq
-jq_installed=$?
-if [  ! $jq_installed -eq 0 ]; then
+
+if [  dpkg-query -l "jq" | grep -q ^.i ]; then
+    jq --version
+else
     sudo apt-get update -y
     sudo apt-get install -y jq
-else
-    jq --version
 fi
 
 TOKEN=$(echo $RES | `jq -r '.token'`)
