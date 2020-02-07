@@ -205,10 +205,10 @@ RES="$(curl -i -k -X "PUT" "${DT_URL}/bom" \
         -d @payload.json)"
 http_status=$(echo $RES | grep "HTTP/1.1" | awk '{print $2}')
 echo $http_status
-if [ ! $http_status -eq '200' ]; then
-    echo "Error ${http_status}: ${RES}"
-    exit 1
-fi
+# if [ ! $http_status -eq '200' ]; then
+#     echo "Error ${http_status}: ${RES}"
+#     exit 1
+# fi
 
 TOKEN=$(echo $RES | jq -r '.token')
 
