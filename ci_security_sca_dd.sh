@@ -209,7 +209,7 @@ echo $http_status
 #     echo "Error ${http_status}: ${RES}"
 #     exit 1
 # fi
-apt list jq
+apt list --installed jq
 jq_installed=$?
 if [  ! $jq_installed -eq 0 ]; then
     sudo apt-get update -y
