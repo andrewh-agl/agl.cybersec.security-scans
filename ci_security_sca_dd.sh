@@ -271,7 +271,9 @@ done
 json_export="$(curl -k -X "GET" "${DT_URL}/finding/project/${PROJECT_UUID}/export" \ 
             -H 'Accept: application/json' \ 
             -H "X-API-Key: ${API_KEY}")"
-if [ ! -z $json_export ]; then
+
+echo $json_export
+if [[ ! -z $json_export ]]; then
     echo $json_export>dep_track.json 1>&2
     # Import to Defect Dojo
     dd_upload
