@@ -268,8 +268,8 @@ do
 done
 
 # Export data from Dep Track
-json_export="$(curl -k -X "GET" "${DT_URL}/finding/project/${PROJECT_UUID}/export" \ 
-            -H 'Content-Type: application/json' \ 
+json_export="$(curl -k -X "GET" "${DT_URL}/finding/project/${PROJECT_UUID}/export" \
+            -H 'Content-Type: application/json' \
             -H 'X-API-Key: ${API_KEY}')"
 
 echo $json_export
