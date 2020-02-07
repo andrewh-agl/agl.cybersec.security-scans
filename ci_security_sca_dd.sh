@@ -206,7 +206,7 @@ cat > payload.json <<__HERE__
 __HERE__
 
 # New
-RES="$(curl -i -k -X "PUT" "${DT_URL}/bom" \
+RES="$(curl -k -X "PUT" "${DT_URL}/bom" \
         -H "Content-Type: application/json" \
         -H "X-API-Key: ${API_KEY}" \
         -d @payload.json)"
