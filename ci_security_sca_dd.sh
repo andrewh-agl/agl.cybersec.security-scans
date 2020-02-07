@@ -211,13 +211,14 @@ echo $http_status
 # fi
 apt list jq
 jq_installed=$?
-
 if [  ! $jq_installed -eq 0 ]; then
     sudo apt-get update -y
     sudo apt-get install -y jq
+else
+    jq --version
 fi
 
-TOKEN=$(echo $RES | jq -r '.token')
+TOKEN=$(echo $RES | `jq -r '.token'`)
 
 # Pool DT and pull results when ready
 if [[ -z $TOKEN ]]; then
