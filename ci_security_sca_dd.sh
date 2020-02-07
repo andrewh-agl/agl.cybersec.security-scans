@@ -171,6 +171,13 @@ case $TYPE in
         exit 1
 esac
 #exit 0
+# Install jq
+if $(dpkg-query -l "jq" | grep -q ^.i ); then
+    jq --version
+else
+    sudo apt-get update -y
+    sudo apt-get install -y jq
+fi
 
 # Dep-Track URL
 DT_URL="https://deptrack.australiasoutheast.cloudapp.azure.com/api/v1"
@@ -203,19 +210,15 @@ RES="$(curl -i -k -X "PUT" "${DT_URL}/bom" \
         -H "Content-Type: application/json" \
         -H "X-API-Key: ${API_KEY}" \
         -d @payload.json)"
-http_status=$(echo $RES | grep "HTTP/1.1" | awk '{print $2}')
-echo $http_status
+
+#http_status=$(echo $RES | grep "HTTP/1.1" | awk '{print $2}')
+#echo $http_status
 # if [ ! $http_status -eq '200' ]; then
 #     echo "Error ${http_status}: ${RES}"
 #     exit 1
 # fi
 
-if [  dpkg-query -l "jq" | grep -q ^.i ]; then
-    jq --version
-else
-    sudo apt-get update -y
-    sudo apt-get install -y jq
-fi
+
 
 TOKEN=$(echo $RES | `jq -r '.token'`)
 
