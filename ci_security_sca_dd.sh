@@ -219,7 +219,7 @@ RES="$(curl -i -k -X "PUT" "${DT_URL}/bom" \
 # fi
 
 
-
+echo $RES
 TOKEN=$(echo $RES | `jq -r '.token'`)
 
 # Pool DT and pull results when ready
