@@ -209,7 +209,14 @@ echo $http_status
 #     echo "Error ${http_status}: ${RES}"
 #     exit 1
 # fi
-jq --help
+apt list jq
+jq_installed=$?
+
+if [  ! $jq_installed -eq 0 ]; then
+    sudo apt-get update -y
+    sudo apt-get install -y jq
+fi
+
 TOKEN=$(echo $RES | jq -r '.token')
 
 # Pool DT and pull results when ready
