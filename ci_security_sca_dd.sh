@@ -209,7 +209,7 @@ echo $http_status
 #     echo "Error ${http_status}: ${RES}"
 #     exit 1
 # fi
-
+sudo apt list jq
 TOKEN=$(echo $RES | jq -r '.token')
 
 # Pool DT and pull results when ready
