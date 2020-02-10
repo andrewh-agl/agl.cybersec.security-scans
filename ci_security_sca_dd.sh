@@ -318,7 +318,7 @@ dd_upload(){
     dt=$(date +"%Y-%m-%d %H:%M:%S")
     d=$(date +"%Y-%m-%d")
     RES="$(curl -k --silent -H "Authorization: ${DD_API_KEY}" \
-    -F "description=SCA Scan ($dt)" \
+    #-F "description=SCA Scan ($dt)" \
     -F "file=@sca_report.json" \
     -F "scan_date=${d}" \
     -F "minimum_severity=Info" \
