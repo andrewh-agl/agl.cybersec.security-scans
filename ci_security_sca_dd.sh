@@ -309,8 +309,8 @@ dd_upload(){
     #exit 0
     # 
     # Upload
-    response="$(curl -k -X POST "${DD_URL}/import-scan/" \ 
-    -H "accept: application/json" \ 
+    response="$(curl -k -X POST "${DD_URL}/import-scan/" \
+    -H "accept: application/json" \
     -H "Content-Type: multipart/form-data" \
     -H "Authorization: ${DD_API_KEY}" \
     -d {"scan_date":"2020-02-05","minimum_severity":"Info","active":"true","verified":"true", \
@@ -322,9 +322,8 @@ if [[ ! -z $json_export ]]; then
     echo $json_export>sca_report.json
     ls -la
     # Import to Defect Dojo
-    dd_upload
-    
-
+    result=dd_upload
+    echo $result
 else
     echo "Failed to get the json report from dependency track."
     exit 1
