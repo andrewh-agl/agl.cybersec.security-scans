@@ -317,14 +317,14 @@ dd_upload(){
     # "file":'${json_export}',"engagement":"5","close_old_findings":"false"}')"
     
     response="$(curl -k -H "Authorization: ${DD_API_KEY}" \
-    --from "file=@sca_report.json" \
-    --form "scan_date=$(date +"%d-%m-%Y")" \
-    --form "minimum_severity=Info" \
-    --form "active=true" \
-    --form "verified=true" \
-    --form "scan_type=Dependency Track Finding Packaging Format (FPF) Export" \
-    --form "engagement=5" \
-    --form "close_old_findings=false" \
+    -F "file=@sca_report.json" \
+    -F "scan_date=$(date +"%d-%m-%Y")" \
+    -F "minimum_severity=Info" \
+    -F "active=true" \
+    -F "verified=true" \
+    -F "scan_type=Dependency Track Finding Packaging Format (FPF) Export" \
+    -F "engagement=5" \
+    -F "close_old_findings=false" \
     "${DD_URL}/import-scan/")"
 
     
