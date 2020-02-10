@@ -316,7 +316,7 @@ dd_upload(){
     # "scan_type":"Dependency Track Finding Packaging Format (FPF) Export", \
     # "file":'${json_export}',"engagement":"5","close_old_findings":"false"}')"
     scan_date=$(date +"%Y-%m-%d")
-    response="$(curl -k -H "Authorization: ${DD_API_KEY}" \
+    response="$(curl -k -i -H "Authorization: ${DD_API_KEY}" \
     -F "file=@sca_report.json" \
     -F "scan_date=${scan_date}" \
     -F "minimum_severity=Info" \
