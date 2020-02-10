@@ -310,12 +310,12 @@ dd_upload(){
     # 
     # Upload
     response="$(curl -k -X POST "${DD_URL}/import-scan/" \
-    -H "accept: application/json" \
+    -H "Accept: application/json" \
     -H "Content-Type: multipart/form-data" \
     -H "Authorization: ${DD_API_KEY}" \
-    -d '{"scan_date":"2020-02-05","minimum_severity":"Info","active":"true","verified":"true", \
-        "scan_type":"Dependency Track Finding Packaging Format (FPF) Export", \
-        "file":'$json_export',"engagement":"5","close_old_findings":"false"}')"
+    -d {"scan_date":"2020-02-05","minimum_severity":"Info","active":"true","verified":"true", \
+    "scan_type":"Dependency Track Finding Packaging Format (FPF) Export", \
+    "file":"$json_export","engagement":"5","close_old_findings":"false"})"
     
     echo $response
 }
