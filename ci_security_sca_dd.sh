@@ -309,10 +309,14 @@ dd_upload(){
     #exit 0
     # 
     # Upload
-    response="$(curl -k -X POST "${DD_URL}/import-scan/" \
-    -H "Accept: application/json" \
-    -H "Content-Type: multipart/form-data" \
-    -H "Authorization: ${DD_API_KEY}" \
+    # response="$(curl -k -X POST "${DD_URL}/import-scan/" \
+    # -H "Accept: application/json" \
+    # -H "Content-Type: multipart/form-data" \
+    # -d '{"scan_date":"2020-02-05","minimum_severity":"Info","active":"true","verified":"true", \
+    # "scan_type":"Dependency Track Finding Packaging Format (FPF) Export", \
+    # "file":'${json_export}',"engagement":"5","close_old_findings":"false"}')"
+    
+    response="$(curl -k -H "Authorization: ${DD_API_KEY}" \
     --from "file=@sca_report.json" \
     --form "scan_date=$(date +"%d-%m-%Y")" \
     --form "minimum_severity=Info" \
@@ -320,11 +324,9 @@ dd_upload(){
     --form "verified=true" \
     --form "scan_type=Dependency Track Finding Packaging Format (FPF) Export" \
     --form "engagement=5" \
-    --form "close_old_findings=false")"
+    --form "close_old_findings=false" \
+    "${DD_URL}/import-scan/")"
 
-    # -d '{"scan_date":"2020-02-05","minimum_severity":"Info","active":"true","verified":"true", \
-    # "scan_type":"Dependency Track Finding Packaging Format (FPF) Export", \
-    # "file":'${json_export}',"engagement":"5","close_old_findings":"false"}')"
     
     echo $response
 }
