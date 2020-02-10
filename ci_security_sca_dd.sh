@@ -267,24 +267,15 @@ do
     esac
 done
 
+
 # Export data from Dep Track
 json_export="$(curl -k -i "GET" "${DT_URL}/finding/project/${PROJECT_UUID}/export" \
             -H 'Content-Type: application/json' \
             -H "X-API-Key: ${API_KEY}")"
 
 echo $json_export
-if [[ ! -z $json_export ]]; then
-    echo $json_export>dep_track.json
-    ls -la
-    # Import to Defect Dojo
-    dd_upload
-    
 
-else
-    echo "Failed to get the json report from dependency track."
-    exit 1
-fi
-
+# Function to upload to DD
 dd_upload(){
     local product_list
     local engagement_list
@@ -326,6 +317,20 @@ dd_upload(){
         "scan_type":"Dependency Track Finding Packaging Format (FPF) Export", \
         "file":{},"engagement":"5","close_old_findings":"false"})"
 }
+
+if [[ ! -z $json_export ]]; then
+    echo $json_export>sca_report.json
+    ls -la
+    # Import to Defect Dojo
+    dd_upload
+    
+
+else
+    echo "Failed to get the json report from dependency track."
+    exit 1
+fi
+
+
 
 # Output results
 echo "Number of vulnerabilities:"
