@@ -318,13 +318,14 @@ dd_upload(){
     dt=$(date +"%Y-%m-%d %H:%M:%S")
     d=$(date +"%Y-%m-%d")
     RES="$(curl -k --silent -H "Authorization: ${DD_API_KEY}" \
+    -F "description=SCA Scan ($dt)" \
     -F "file=@sca_report.json" \
     -F "scan_date=${d}" \
     -F "minimum_severity=Info" \
     -F "active=true" \
     -F "verified=true" \
     -F "scan_type=Dependency Track Finding Packaging Format (FPF) Export" \
-    -F "engagement=2020-02-10" \
+    -F "engagement=5" \
     -F "close_old_findings=true" \
     "${DD_URL}/import-scan/")"
 
