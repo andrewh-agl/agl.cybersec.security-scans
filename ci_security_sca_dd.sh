@@ -298,11 +298,11 @@ dd_upload(){
     # List products
     product_list="$(curl -k -X GET "${DD_URL}/products/" \
                 -H "accept: application/json" \
-                -H "Authorization: 'Token ${DD_API_KEY}'")"
+                -H "Authorization: ${DD_API_KEY}")"
     # List of engagements
     engagement_list="$(curl -k -X GET "${DD_URL}/engagements/" \
                 -H "accept: application/json" \
-                -H "Authorization: 'Token ${DD_API_KEY}'")"
+                -H "Authorization: ${DD_API_KEY}")"
 
     echo $product_list
     echo $engagement_list
