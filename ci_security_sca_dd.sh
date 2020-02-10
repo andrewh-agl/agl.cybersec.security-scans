@@ -277,8 +277,8 @@ if [[ ! -z $json_export ]]; then
     echo $json_export>dep_track.json
     ls -la
     # Import to Defect Dojo
-    #dd_upload
-    exit 0
+    dd_upload
+    
 
 else
     echo "Failed to get the json report from dependency track."
