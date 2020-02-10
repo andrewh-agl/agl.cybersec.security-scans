@@ -313,9 +313,18 @@ dd_upload(){
     -H "Accept: application/json" \
     -H "Content-Type: multipart/form-data" \
     -H "Authorization: ${DD_API_KEY}" \
-    -d '{"scan_date":"2020-02-05","minimum_severity":"Info","active":"true","verified":"true", \
-    "scan_type":"Dependency Track Finding Packaging Format (FPF) Export", \
-    "file":'${json_export}',"engagement":"5","close_old_findings":"false"}')"
+    --from "file=@sca_report.json" \
+    --form "scan_date=$(date +"%d-%m-%Y")" \
+    --form "minimum_severity=Info" \
+    --form "active=true" \
+    --form "verified=true" \
+    --form "scan_type=Dependency Track Finding Packaging Format (FPF) Export" \
+    --form "engagement=5" \
+    --form "close_old_findings=false")"
+
+    # -d '{"scan_date":"2020-02-05","minimum_severity":"Info","active":"true","verified":"true", \
+    # "scan_type":"Dependency Track Finding Packaging Format (FPF) Export", \
+    # "file":'${json_export}',"engagement":"5","close_old_findings":"false"}')"
     
     echo $response
 }
