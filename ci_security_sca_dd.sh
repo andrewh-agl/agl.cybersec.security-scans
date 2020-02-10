@@ -323,7 +323,7 @@ dd_upload(){
     -F "active=true" \
     -F "verified=true" \
     -F "scan_type=Dependency Track Finding Packaging Format (FPF) Export" \
-    -F "engagement=5" \
+    -F "engagement=2020-02-10" \
     -F "close_old_findings=true" \
     "${DD_URL}/import-scan/")"
 
