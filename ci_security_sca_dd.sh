@@ -334,8 +334,8 @@ dd_upload(){
 		echo $RES;
 		exit 1
 	fi
-    
-    echo $response
+
+    echo $RES
 }
 
 if [[ ! -z $json_export ]]; then
