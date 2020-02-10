@@ -315,10 +315,12 @@ dd_upload(){
     # -d '{"scan_date":"2020-02-05","minimum_severity":"Info","active":"true","verified":"true", \
     # "scan_type":"Dependency Track Finding Packaging Format (FPF) Export", \
     # "file":'${json_export}',"engagement":"5","close_old_findings":"false"}')"
-    scan_date=$(date +"%Y-%m-%d")
-    response="$(curl -k -i -H "Authorization: ${DD_API_KEY}" \
+    dt=$(date +"%Y-%m-%d %H:%M:%S")
+    d=$(date +"%Y-%m-%d")
+    RES="$(curl -k --silent -H "Authorization: ${DD_API_KEY}" \
+    -F "description=SCA Scan ($dt)"
     -F "file=@sca_report.json" \
-    -F "scan_date=${scan_date}" \
+    -F "scan_date=${d}" \
     -F "minimum_severity=Info" \
     -F "active=true" \
     -F "verified=true" \
@@ -327,6 +329,11 @@ dd_upload(){
     -F "close_old_findings=true" \
     "${DD_URL}/import-scan/")"
 
+    if [ "$(echo $RES | jq '.scan_date')" == "" ]; then
+		echo "Could not import SCA Scan report."
+		echo $RES;
+		exit 1
+	fi
     
     echo $response
 }
