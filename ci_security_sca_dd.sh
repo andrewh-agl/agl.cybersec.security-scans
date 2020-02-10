@@ -315,10 +315,10 @@ dd_upload(){
     # -d '{"scan_date":"2020-02-05","minimum_severity":"Info","active":"true","verified":"true", \
     # "scan_type":"Dependency Track Finding Packaging Format (FPF) Export", \
     # "file":'${json_export}',"engagement":"5","close_old_findings":"false"}')"
-    
+    scan_date=$(date +"%Y-%m-%d")
     response="$(curl -k -H "Authorization: ${DD_API_KEY}" \
     -F "file=@sca_report.json" \
-    -F "scan_date=$(date +"%d-%m-%Y")" \
+    -F "scan_date=${scan_date}" \
     -F "minimum_severity=Info" \
     -F "active=true" \
     -F "verified=true" \
