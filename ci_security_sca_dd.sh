@@ -306,7 +306,7 @@ dd_upload(){
 
     echo $product_list
     echo $engagement_list
-    exit 0
+    #exit 0
     # 
     # Upload
     response="$(curl -X POST "${DD_URL}/import-scan/" \ 
@@ -315,7 +315,7 @@ dd_upload(){
     -H "Authorization: 'Token ${DD_API_KEY}'" \
     -d {"scan_date":"2020-02-05","minimum_severity":"Info","active":"true","verified":"true", \
         "scan_type":"Dependency Track Finding Packaging Format (FPF) Export", \
-        "file":{},"engagement":"5","close_old_findings":"false"})"
+        "file":{@sca_report.json},"engagement":"5","close_old_findings":"false"})"
 }
 
 if [[ ! -z $json_export ]]; then
