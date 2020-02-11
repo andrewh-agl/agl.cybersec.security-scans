@@ -247,7 +247,7 @@ fi
 
 # Search through findings and report results here
 c=0; h=0; m=0; l=0; u=0;
-for severity in $(echo $FINDINGS |jq -r '.[].vulnerability.severity')
+for severity in $(echo $FINDINGS | jq -r '.[].vulnerability.severity')
 do
     case $severity in
         "CRITICAL")
@@ -274,11 +274,11 @@ json_export="$(curl -k "GET" "${DT_URL}/finding/project/${PROJECT_UUID}/export" 
             -H "X-API-Key: ${API_KEY}")"
 
 echo $json_export
-
+PRODUCT_NAME=$(echo $json_export | jq '.project[name]')
+echo $PRODUCT_NAME
+exit 1
 # Function to upload to DD
 dd_upload(){
-    local product_list
-    local engagement_list
     ###
     #1. Find project by listing all products and matching product name to dep-track project name
     #2. If a match found, use the product ID
@@ -296,28 +296,20 @@ dd_upload(){
     ###
     
     # List products
-    product_list="$(curl -k -X GET "${DD_URL}/products/" \
+    local product_list="$(curl -k --silent GET "${DD_URL}/products/" \
                 -H "accept: application/json" \
                 -H "Authorization: ${DD_API_KEY}")"
     # List of engagements
-    engagement_list="$(curl -k -X GET "${DD_URL}/engagements/" \
+    local engagement_list="$(curl -k -X GET "${DD_URL}/engagements/" \
                 -H "accept: application/json" \
                 -H "Authorization: ${DD_API_KEY}")"
 
     echo $product_list
     echo $engagement_list
-    #exit 0
-    # 
-    # Upload
-    # response="$(curl -k -X POST "${DD_URL}/import-scan/" \
-    # -H "Accept: application/json" \
-    # -H "Content-Type: multipart/form-data" \
-    # -d '{"scan_date":"2020-02-05","minimum_severity":"Info","active":"true","verified":"true", \
-    # "scan_type":"Dependency Track Finding Packaging Format (FPF) Export", \
-    # "file":'${json_export}',"engagement":"5","close_old_findings":"false"}')"
-    dt=$(date +"%Y-%m-%d %H:%M:%S")
-    d=$(date +"%Y-%m-%d")
-    RES="$(curl -k --silent -H "Authorization: ${DD_API_KEY}" \
+   
+    local dt=$(date +"%Y-%m-%d %H:%M:%S")
+    local d=$(date +"%Y-%m-%d")
+    local RES="$(curl -k --silent -H "Authorization: ${DD_API_KEY}" \
     -F "description=SCA Scan ($dt)" \
     -F "file=@sca_report.json" \
     -F "scan_date=${d}" \
