@@ -314,7 +314,7 @@ dd_upload(){
     #for name in "${product_name_arr[@]}"
     #do
     #    if [ "$name" == ${PRODUCT_NAME} ]; then
-            PRODUCT_ID=$(echo "${product_list}" | jq '.results[] | select(.name == '${PRODUCT_NAME}' | .id')
+            PRODUCT_ID=$(echo "${product_list}" | jq '.results[] | select(.name == '${PRODUCT_NAME}') | .id')
     #        break
     #    else
     #        continue
