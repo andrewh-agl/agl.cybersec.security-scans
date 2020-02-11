@@ -308,7 +308,7 @@ dd_upload(){
     #             -H "accept: application/json" \
     #             -H "Authorization: ${DD_API_KEY}")"
     
-    jq -c '.results[]' product_list | while read i; do
+    jq -c '.results[]' $product_list | while read i; do
         echo $i
     done
     # for name in "$(echo ${product_list} | jq '.results[].name')"
