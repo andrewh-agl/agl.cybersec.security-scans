@@ -300,7 +300,7 @@ dd_upload(){
     ###
     
     # List products
-    local product_list="$(curl -k --silent GET "${DD_URL}/products/" \
+    local product_list="$(curl -k --silent -X GET "${DD_URL}/products/" \
                 -H "accept: application/json" \
                 -H "Authorization: ${DD_API_KEY}")"
     # List of engagements
@@ -316,7 +316,7 @@ dd_upload(){
         echo "Project does not exist in Defect Dojo.";
         exit 1;
     fi
-    echo $(system.pullRequest.sourceCommitId)
+    echo $(git rev-parse HEAD)
     echo ${COMMIT_ID}
     echo ${REPO_NAME}
     echo ${REPO_URL}
