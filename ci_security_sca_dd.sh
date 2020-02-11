@@ -309,10 +309,10 @@ dd_upload(){
     #             -H "Authorization: ${DD_API_KEY}")"
     
     
-    for row in $(echo ${product_list} | jq -r '.[]')
+    for row in $(echo "${product_list}" | jq -r '.[]')
     do
-        _jq(){
-            echo $row | jq -r ${1}
+        _jq() {
+            echo ${row} | jq -r ${1}
         }
         echo $(_jq '.name')
 
