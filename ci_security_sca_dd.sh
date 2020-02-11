@@ -308,18 +308,18 @@ dd_upload(){
     #             -H "accept: application/json" \
     #             -H "Authorization: ${DD_API_KEY}")"
     
-    local product_name_arr=( "$(echo "${product_list}" | jq -r '.results[].name')" )
-    echo ${product_name_arr[@]}
+    #local product_name_arr=( "$(echo "${product_list}" | jq -r '.results[].name')" )
+    #echo ${product_name_arr[@]}
     #local product_id_arr=( $(echo "${product_list}" | jq -r '.results[].id') )
-    for name in "${product_name_arr[@]}"
-    do
-        if [ "$name" == "$PRODUCT_NAME" ]; then
+    #for name in "${product_name_arr[@]}"
+    #do
+    #    if [ "$name" == ${PRODUCT_NAME} ]; then
             PRODUCT_ID=$(echo ${product_list} | jq '.results[] | select(.name == '${name}' | .id')
-            break
-        else
-            continue
-        fi
-    done
+    #        break
+    #    else
+    #        continue
+    #    fi
+    #done
     
     echo ${PRODUCT_ID}
     if [ "$PRODUCT_ID" == "" ]; then
