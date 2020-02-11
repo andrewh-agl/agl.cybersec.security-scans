@@ -311,7 +311,9 @@ dd_upload(){
     do
         if [ "$name" == "$PRODUCT_NAME" ]; then
             PRODUCT_ID=$(echo ${product_list} | jq '.results[0].id')
-            break;
+            break
+        else
+            continue
         fi
     done
 
