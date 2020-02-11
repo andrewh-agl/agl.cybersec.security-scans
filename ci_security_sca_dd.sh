@@ -308,18 +308,21 @@ dd_upload(){
     #             -H "accept: application/json" \
     #             -H "Authorization: ${DD_API_KEY}")"
     
-    jq -c '.results[]' $product_list | while read i; do
-        echo $i
+    
+    for row in $(echo ${product_list} | jq -r '.[]')
+    do
+        _jq(){
+            echo $row | jq -r ${1}
+        }
+        echo $(_jq '.name')
+
+        # if [ "$name" == "$PRODUCT_NAME" ]; then
+        #     PRODUCT_ID=$(echo ${product_list} | jq '.results[].id')
+        #     break
+        # else
+        #     continue
+        # fi
     done
-    # for name in "$(echo ${product_list} | jq '.results[].name')"
-    # do
-    #     if [ "$name" == "$PRODUCT_NAME" ]; then
-    #         PRODUCT_ID=$(echo ${product_list} | jq '.results[].id')
-    #         break
-    #     else
-    #         continue
-    #     fi
-    # done
 
     if [ "$PRODUCT_ID" == "" ]; then
         echo "Project does not exist in Defect Dojo.";
