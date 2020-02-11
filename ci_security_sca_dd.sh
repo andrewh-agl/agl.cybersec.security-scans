@@ -316,7 +316,7 @@ dd_upload(){
         echo "Project does not exist in Defect Dojo.";
         exit 1;
     fi
-    echo $(git rev-parse HEAD)
+    echo $(git log --format="%H" -n 1)
     echo ${COMMIT_ID}
     echo ${REPO_NAME}
     echo ${REPO_URL}
