@@ -307,7 +307,7 @@ dd_upload(){
     # local engagement_list="$(curl -k -X GET "${DD_URL}/engagements/" \
     #             -H "accept: application/json" \
     #             -H "Authorization: ${DD_API_KEY}")"
-    for name in $(echo ${product_list} | jq '.results[0].name')
+    for name in "$(echo ${product_list} | jq '.results[0].name')"
     do
         if [ "$name" == "$PRODUCT_NAME" ]; then
             PRODUCT_ID=$(echo ${product_list} | jq '.results[0].id')
