@@ -309,7 +309,7 @@ dd_upload(){
     #             -H "Authorization: ${DD_API_KEY}")"
     
     local product_name_arr=( "$(echo "${product_list}" | jq -r '.results[].name')" )
-    echo ${product_name_array[@]}
+    echo ${product_name_arr[@]}
     #local product_id_arr=( $(echo "${product_list}" | jq -r '.results[].id') )
     for name in "${product_name_arr[@]}"
     do
