@@ -308,24 +308,16 @@ dd_upload(){
     #             -H "accept: application/json" \
     #             -H "Authorization: ${DD_API_KEY}")"
     
-    #local product_name_arr=( "$(echo "${product_list}" | jq -r '.results[].name')" )
-    #echo ${product_name_arr[@]}
-    #local product_id_arr=( $(echo "${product_list}" | jq -r '.results[].id') )
-    #for name in "${product_name_arr[@]}"
-    #do
-    #    if [ "$name" == ${PRODUCT_NAME} ]; then
-            PRODUCT_ID=$(echo "${product_list}" | jq '.results[] | select(.name == '${PRODUCT_NAME}') | .id')
-    #        break
-    #    else
-    #        continue
-    #    fi
-    #done
+    # Find product Id based on product name
+    PRODUCT_ID=$(echo "${product_list}" | jq '.results[] | select(.name == '${PRODUCT_NAME}') | .id')
     
     echo ${PRODUCT_ID}
     if [ "$PRODUCT_ID" == "" ]; then
         echo "Project does not exist in Defect Dojo.";
         exit 1;
     fi
+    echo $(system.pullRequest.sourceCommitId)
+    echo ${Build.SourceVersion}
     exit 1
     echo $product_list
     echo $engagement_list
