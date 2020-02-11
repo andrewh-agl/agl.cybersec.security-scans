@@ -317,7 +317,9 @@ dd_upload(){
         exit 1;
     fi
     echo $(system.pullRequest.sourceCommitId)
-    echo ${Build.SourceVersion}
+    echo ${COMMIT_ID}
+    echo ${REPO_NAME}
+    echo ${REPO_URL}
     exit 1
     echo $product_list
     echo $engagement_list
