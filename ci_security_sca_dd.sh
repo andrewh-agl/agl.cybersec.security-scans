@@ -308,7 +308,8 @@ dd_upload(){
     #             -H "accept: application/json" \
     #             -H "Authorization: ${DD_API_KEY}")"
     
-    local product_name_arr=( $(echo "${product_list}" | jq -r '.results[].name') )
+    local product_name_arr=( "$(echo "${product_list}" | jq -r '.results[].name')" )
+    echo ${product_name_array[@]}
     #local product_id_arr=( $(echo "${product_list}" | jq -r '.results[].id') )
     for name in ${product_name_arr[@]}
     do
@@ -319,7 +320,7 @@ dd_upload(){
             continue
         fi
     done
-    echo ${product_name_array[@]}
+    
     echo ${PRODUCT_ID}
     if [ "$PRODUCT_ID" == "" ]; then
         echo "Project does not exist in Defect Dojo.";
