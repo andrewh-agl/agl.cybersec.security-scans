@@ -269,12 +269,12 @@ done
 
 
 # Export data from Dep Track
-json_export="$(curl -k "GET" "${DT_URL}/finding/project/${PROJECT_UUID}/export" \
+json_export="$(curl -k --silent "GET" "${DT_URL}/finding/project/${PROJECT_UUID}/export" \
             -H 'Content-Type: application/json' \
             -H "X-API-Key: ${API_KEY}")"
 
 echo $json_export
-PRODUCT_NAME=$(echo $json_export | jq '.project[name]')
+PRODUCT_NAME=$(echo $json_export | jq '.project.name')
 echo $PRODUCT_NAME
 exit 1
 # Function to upload to DD
