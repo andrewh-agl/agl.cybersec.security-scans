@@ -273,10 +273,14 @@ json_export="$(curl -k --silent "GET" "${DT_URL}/finding/project/${PROJECT_UUID}
             -H 'Content-Type: application/json' \
             -H "X-API-Key: ${API_KEY}")"
 
-echo $json_export
+#echo $json_export
 PRODUCT_NAME=$(echo $json_export | jq '.project.name')
-echo $PRODUCT_NAME
-exit 1
+if [ "$PRODUCT_NAME" == "" ]; then
+	echo "Project does not exist in Dependency Track.";
+	exit 1;
+fi
+
+
 # Function to upload to DD
 dd_upload(){
     ###
@@ -300,10 +304,22 @@ dd_upload(){
                 -H "accept: application/json" \
                 -H "Authorization: ${DD_API_KEY}")"
     # List of engagements
-    local engagement_list="$(curl -k -X GET "${DD_URL}/engagements/" \
-                -H "accept: application/json" \
-                -H "Authorization: ${DD_API_KEY}")"
+    # local engagement_list="$(curl -k -X GET "${DD_URL}/engagements/" \
+    #             -H "accept: application/json" \
+    #             -H "Authorization: ${DD_API_KEY}")"
+    for name in $(echo ${product_list} | jq '.results.name')
+    do
+        if [ "$name" == "$PRODUCT_NAME" ]; then
+            PRODUCT_ID=$(echo ${product_list} | jq '.results.id')
+            break;
+        fi
+    done
 
+    if [ "$PRODUCT_ID" == "" ]; then
+        echo "Project does not exist in Defect Dojo.";
+        exit 1;
+    fi
+    exit 1
     echo $product_list
     echo $engagement_list
    
@@ -334,8 +350,10 @@ if [[ ! -z $json_export ]]; then
     echo $json_export>sca_report.json
     ls -la
     # Import to Defect Dojo
-    result=$(dd_upload)
-    echo $result
+    
+    dd_upload
+    #result=$(dd_upload)
+    #echo $result
 else
     echo "Failed to get the json report from dependency track."
     exit 1
