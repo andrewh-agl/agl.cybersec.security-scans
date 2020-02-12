@@ -82,6 +82,14 @@ if [ -z "$REPO_URL" ]; then
     echo "Repo URL not set in environment. Please set."
     exit 1
 fi
+if [ -z "$BRANCH" ]; then 
+    echo "Branch not set in environment. Please set."
+    exit 1
+fi
+if [ -z "$BUILD_ID" ]; then 
+    echo "Build Id not set in environment. Please set."
+    exit 1
+fi
 
 if [ -z "$DD_KEY" ]; then 
     echo "Defect dojo API key not set in environment. Please set."
@@ -348,8 +356,9 @@ dd_upload(){
         "check_list": true,
         "status": "Not Started",
         "engagement_type": "CI/CD",
-        "build_id": "string",
+        "build_id": "'${BUILD_ID}'",
         "commit_hash": "'${COMMIT_ID}'",
+        "branch_tag": "'${BRANCH}'",
         "source_code_management_uri": "'${REPO_URL}'",
         "deduplication_on_engagement": true,
         "product": "'${PRODUCT_ID}'" }'
