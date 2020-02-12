@@ -59,6 +59,34 @@ Options:
 
 EOF
 }
+#  Dep-Track and Dojo URLs
+DT_URL="https://deptrack.australiasoutheast.cloudapp.azure.com/api/v1"
+DD_URL="https://52.163.231.2/api/v2"
+# Read values from env
+# Dep Track API Key and Project UUIDs are unique to Project/team
+DEFAULT_PROJECT_UUID="2d395a41-d684-45c7-a8f9-92d602a43223"
+DEFAULT_API_KEY="6esBJT96rlTNMfivA09hyikpHPNtV7Rz"
+PROJECT_UUID=${PROJECT_UUID:-$DEFAULT_PROJECT_UUID}
+# Dojo API key is common
+DD_KEY="6f1f60c9bf8161a16227470c09b53298b42ed62e" 
+DD_API_KEY="Token ${DD_KEY}"
+API_KEY=${API_KEY:-$DEFAULT_API_KEY}
+
+# Check env variables if they are set
+if [ -z "$COMMIT_ID" ]; then 
+    echo "Commit ID not set in environment. Please set."
+    exit 1
+fi
+
+if [ -z "$REPO_URL" ]; then 
+    echo "Repo URL not set in environment. Please set."
+    exit 1
+fi
+
+if [ -z "$DD_KEY" ]; then 
+    echo "Defect dojo API key not set in environment. Please set."
+    exit 1
+fi
 
 # Set SLN to null
 SLN=Null
@@ -170,7 +198,7 @@ case $TYPE in
         echo "Project type not supported. Only .NET, NodeJS and Python are supported." ;
         exit 1
 esac
-#exit 0
+
 # Install jq
 if $(dpkg-query -l "jq" | grep -q ^.i ); then
     jq --version
@@ -179,21 +207,7 @@ else
     sudo apt-get install -y jq
 fi
 
-# Dep-Track URL
-DT_URL="https://deptrack.australiasoutheast.cloudapp.azure.com/api/v1"
-# Dojo URL
-DD_URL="https://52.163.231.2/api/v2"
-# Read values from env
-# Dep Track API Key and Project UUIDs are unique to Project/team
-DEFAULT_PROJECT_UUID="2d395a41-d684-45c7-a8f9-92d602a43223"
-DEFAULT_API_KEY="6esBJT96rlTNMfivA09hyikpHPNtV7Rz"
-# Dojo API key is common
-DD_KEY="6f1f60c9bf8161a16227470c09b53298b42ed62e" 
 
-DD_API_KEY="Token ${DD_KEY}"
-PROJECT_UUID=${PROJECT_UUID:-$DEFAULT_PROJECT_UUID}
-
-API_KEY=${API_KEY:-$DEFAULT_API_KEY}
 # Generate base64 encoded bom without any whitespaces
 mv $DIR/bom.xml .
 
@@ -283,6 +297,8 @@ fi
 
 # Function to upload to DD
 dd_upload(){
+    local dt=$(date +"%Y-%m-%d %H:%M:%S")
+    local d=$(date +"%Y-%m-%d")
     ###
     #1. Find project by listing all products and matching product name to dep-track project name
     #2. If a match found, use the product ID
@@ -316,16 +332,49 @@ dd_upload(){
         echo "Project does not exist in Defect Dojo.";
         exit 1;
     fi
-    echo $(git log --format="%H" -n 1)
-    echo ${COMMIT_ID}
-    echo ${REPO_NAME}
-    echo ${REPO_URL}
-    exit 1
-    echo $product_list
-    echo $engagement_list
+    
+    
+    # Create engagement
+    RES="$(curl -k --silent -X POST "${DD_URL}/engagements/" \
+    -H "accept: application/json" \
+    -H "Content-Type: application/json" \
+    -H "Authorization: ${DD_API_KEY}" \
+    -d '{"tags": "SCA", \
+		 "name": "test", \
+		 "description": "SCA Scan '($dt)'", \
+		 "version": "1.0", \
+		 "first_contacted": "'${d}'", \
+		 "target_start": "'${d}'", \
+		 "target_end": "'${d}'", \
+		 "reason": "string", \
+		 "tracker": "string", \
+		 "test_strategy": "string", \
+		 "threat_model": true, \
+		 "api_test": true, \
+		 "pen_test": true, \
+		 "check_list": true, \
+		 "status": "Not Started", \
+		 "engagement_type": "CI/CD", \
+		 "build_id": "string", \
+		 "commit_hash": "'${COMMIT_ID}'", \
+		 "branch_tag": "string", \
+		 "source_code_management_uri": "'${REPO_URL}'", \
+		 "deduplication_on_engagement": true, \
+		 "eng_type": 0, \
+		 "lead": 0, \
+		 "requester": 0, \
+		 "preset": 0, \
+		 "report_type": 0, \
+		 "product": ${PRODUCT_ID}, \
+		 "build_server": 0, \
+		 "source_code_management_server": 0, \
+		 "orchestration_engine": 0}')"
+    
+    echo $RES
+    exit 0
+    # Import scan
    
-    local dt=$(date +"%Y-%m-%d %H:%M:%S")
-    local d=$(date +"%Y-%m-%d")
+   
     local RES="$(curl -k --silent -H "Authorization: ${DD_API_KEY}" \
     -F "description=SCA Scan ($dt)" \
     -F "file=@sca_report.json" \
