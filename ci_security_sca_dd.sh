@@ -340,8 +340,8 @@ dd_upload(){
     -H "Content-Type: application/json" \
     -H "Authorization: ${DD_API_KEY}" \
     -d "{"tags": [ "SCA" ],
-        "name": "SCA Scan - ${dt}",
-        "description": "SCA Scan - ${dt}",
+        "name": "SCA-Scan-${dt}",
+        "description": "SCA-Scan-${dt}",
         "version": "1.0",
         "first_contacted": "${d}",
         "target_start": "${d}",
