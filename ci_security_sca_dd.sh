@@ -368,8 +368,8 @@ dd_upload(){
 	fi
     echo "Engagement created. Success."
     ENGAGEMENT_ID=$(echo "${RES}" | jq '.id')
-    echo ${ENGAGEMENT_ID}
-    exit 0
+    #echo ${ENGAGEMENT_ID}
+    
    # Import scan
     local RES="$(curl -k --silent -H "Authorization: ${DD_API_KEY}" \
     -F "description=SCA Scan ($dt)" \
