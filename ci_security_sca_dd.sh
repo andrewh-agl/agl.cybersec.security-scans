@@ -330,7 +330,7 @@ dd_upload(){
     fi
     
     # Create engagement
-    RES="$(curl -k --silent -X POST "${DD_URL}/engagements/" \
+    RES="$(curl -k -X POST "${DD_URL}/engagements/" \
     -H "accept: application/json" \
     -H "Content-Type: application/json" \
     -H "Authorization: ${DD_API_KEY}" \
