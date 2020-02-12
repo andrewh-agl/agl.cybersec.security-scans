@@ -327,7 +327,7 @@ dd_upload(){
     # Find product Id based on product name
     PRODUCT_ID=$(echo "${product_list}" | jq '.results[] | select(.name == '${PRODUCT_NAME}') | .id')
     
-    echo ${PRODUCT_ID}
+    #echo ${PRODUCT_ID}
     if [ "$PRODUCT_ID" == "" ]; then
         echo "Project does not exist in Defect Dojo.";
         exit 1;
@@ -360,11 +360,16 @@ dd_upload(){
         "product": "'${PRODUCT_ID}'" }'
         )"
     
-    echo ${RES}
+    #echo ${RES}       
+    if [ "$(echo $RES | jq '.id')" == "" ]; then
+		echo "Error: Could not create engagement."
+		echo $RES;
+		exit 1
+	fi
+    ENGAGEMENT_ID=$(echo "${RES}" | jq '.id')
+    echo ${ENGAGEMENT_ID}
     exit 0
-    # Import scan
-   
-   
+   # Import scan
     local RES="$(curl -k --silent -H "Authorization: ${DD_API_KEY}" \
     -F "description=SCA Scan ($dt)" \
     -F "file=@sca_report.json" \
