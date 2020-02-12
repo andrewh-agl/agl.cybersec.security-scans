@@ -366,6 +366,7 @@ dd_upload(){
 		echo $RES;
 		exit 1
 	fi
+    echo "Engagement created. Success."
     ENGAGEMENT_ID=$(echo "${RES}" | jq '.id')
     echo ${ENGAGEMENT_ID}
     exit 0
@@ -378,7 +379,7 @@ dd_upload(){
     -F "active=true" \
     -F "verified=true" \
     -F "scan_type=Dependency Track Finding Packaging Format (FPF) Export" \
-    -F "engagement=5" \
+    -F "engagement=${ENGAGEMENT_ID}" \
     -F "close_old_findings=true" \
     "${DD_URL}/import-scan/")"
 
@@ -387,7 +388,7 @@ dd_upload(){
 		echo $RES;
 		exit 1
 	fi
-
+    echo "Scan report imported. Success."
     echo $RES
 }
 
