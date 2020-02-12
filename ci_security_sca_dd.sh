@@ -297,7 +297,7 @@ fi
 
 # Function to upload to DD
 dd_upload(){
-    local dt=$(date +"%Y-%m-%d %H:%M:%S")
+    local dt=$(date +"%Y-%m-%d%H:%M:%S")
     local d=$(date +"%Y-%m-%d")
     ###
     #1. Find project by listing all products and matching product name to dep-track project name
