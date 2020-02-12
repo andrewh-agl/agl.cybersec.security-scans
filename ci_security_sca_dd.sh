@@ -319,10 +319,6 @@ dd_upload(){
     local product_list="$(curl -k --silent -X GET "${DD_URL}/products/" \
                 -H "accept: application/json" \
                 -H "Authorization: ${DD_API_KEY}")"
-    # List of engagements
-    # local engagement_list="$(curl -k -X GET "${DD_URL}/engagements/" \
-    #             -H "accept: application/json" \
-    #             -H "Authorization: ${DD_API_KEY}")"
     
     # Find product Id based on product name
     PRODUCT_ID=$(echo "${product_list}" | jq '.results[] | select(.name == '${PRODUCT_NAME}') | .id')
@@ -332,7 +328,6 @@ dd_upload(){
         echo "Project does not exist in Defect Dojo.";
         exit 1;
     fi
-    
     
     # Create engagement
     RES="$(curl -k --silent -X POST "${DD_URL}/engagements/" \
@@ -371,7 +366,7 @@ dd_upload(){
     #echo ${ENGAGEMENT_ID}
     
    # Import scan
-    local RES="$(curl -k --silent -H "Authorization: ${DD_API_KEY}" \
+    RES="$(curl -k --silent -H "Authorization: ${DD_API_KEY}" \
     -F "description=SCA Scan ($dt)" \
     -F "file=@sca_report.json" \
     -F "scan_date=${d}" \
