@@ -339,9 +339,9 @@ dd_upload(){
     -H "accept: application/json" \
     -H "Content-Type: application/json" \
     -H "Authorization: ${DD_API_KEY}" \
-    -d '{"tags": [ "SCA" ],
-        "name": "SCA Scan - '${dt}'",
-        "description": "SCA Scan - '${dt}'",
+    -d "{"tags": [ "SCA" ],
+        "name": "SCA Scan - ${dt}",
+        "description": "SCA Scan - ${dt}",
         "version": "1.0",
         "first_contacted": "${d}",
         "target_start": "${d}",
@@ -357,7 +357,7 @@ dd_upload(){
         "commit_hash": "${COMMIT_ID}",
         "source_code_management_uri": "${REPO_URL}",
         "deduplication_on_engagement": true,
-        "product": "${PRODUCT_ID}" }'
+        "product": "${PRODUCT_ID}" }"
         )"
     
     echo ${RES}
