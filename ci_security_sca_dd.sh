@@ -341,7 +341,7 @@ dd_upload(){
     -H "Authorization: ${DD_API_KEY}" \
     -d "{"tags": "SCA",
 		 "name": "test",
-		 "description": "SCA Scan '($dt)'",
+		 "description": "SCA Scan ($dt)",
 		 "version": "1.0",
 		 "first_contacted": "${d}",
 		 "target_start": "${d}",
