@@ -296,8 +296,9 @@ json_export="$(curl -k --silent "GET" "${DT_URL}/finding/project/${PROJECT_UUID}
             -H "X-API-Key: ${API_KEY}")"
 
 #echo $json_export
-PRODUCT_NAME=$(echo $json_export | jq '.project.name')
-if [ "$PRODUCT_NAME" == "" ]; then
+# Grep project name from dep track
+DT_PROJECT_NAME=$(echo $json_export | jq '.project.name')
+if [ "$DT_PROJECT_NAME" == "" ]; then
 	echo "Project does not exist in Dependency Track.";
 	exit 1;
 fi
@@ -306,7 +307,10 @@ fi
 # Function to upload to DD
 dd_upload(){
     local dt=$(date +"%Y-%m-%d%H:%M:%S")
-    local d=$(date +"%Y-%m-%d")
+    # start date is 2 days after first contact
+    local start_d=$(date -d "+2 days" +"%Y-%m-%d" +2d)
+    # end date is 6 days after start date
+    local end_d=$(date +"%Y-%m-%d" -d "$start_d+6 days")
     ###
     #1. Find project by listing all products and matching product name to dep-track project name
     #2. If a match found, use the product ID
@@ -328,79 +332,120 @@ dd_upload(){
                 -H "accept: application/json" \
                 -H "Authorization: ${DD_API_KEY}")"
     
+    # List engagements
+    local eng_list="$(curl -k --silent -X GET "${DD_URL}/engagements/" \
+                -H "accept: application/json" \
+                -H "Authorization: ${DD_API_KEY}")"
     # Find product Id based on product name
-    PRODUCT_ID=$(echo "${product_list}" | jq '.results[] | select(.name == '${PRODUCT_NAME}') | .id')
+    PRODUCT_ID=$(echo "${product_list}" | jq '.results[] | select(.name == '${BU}') | .id')
+    # Find engagement name based on project name in dep track
+    ENG_NAME=$(echo "${eng_list}" | jq '.results[] | select(.name == '${DT_PROJECT_NAME}') | .name')
     
     #echo ${PRODUCT_ID}
     if [ "$PRODUCT_ID" == "" ]; then
-        echo "Project does not exist in Defect Dojo.";
+        echo "BU does not exist in Defect Dojo.";
         exit 1;
     fi
-    
-    # Create engagement
-    RES="$(curl -k -X POST "${DD_URL}/engagements/" \
-    -H "accept: application/json" \
-    -H "Content-Type: application/json" \
-    -H "Authorization: ${DD_API_KEY}" \
-    -d '{"tags": [ "SCA" ],
-        "name": "SCA Scan '${dt}'",
-        "description": "SCA Scan '${dt}'",
-        "version": "1.0",
-        "first_contacted": "'${d}'",
-        "target_start": "'${d}'",
-        "target_end": "'${d}'",
-        "reason": "null",
-        "threat_model": true,
-        "api_test": true,
-        "pen_test": true,
-        "check_list": true,
-        "status": "Not Started",
-        "engagement_type": "CI/CD",
-        "build_id": "'${BUILD_ID}'",
-        "commit_hash": "'${COMMIT_ID}'",
-        "branch_tag": "'${BRANCH}'",
-        "source_code_management_uri": "'${REPO_URL}'",
-        "deduplication_on_engagement": true,
-        "product": "'${PRODUCT_ID}'" }'
-        )"
-    
-    #echo ${RES}       
-    if [ "$(echo $RES | jq '.id')" == "" ]; then
-		echo "Error: Could not create engagement."
-		echo $RES;
-		exit 1
-	fi
-    echo "Engagement created. Success."
-    ENGAGEMENT_ID=$(echo "${RES}" | jq '.id')
-    #echo ${ENGAGEMENT_ID}
-    
-   # Import scan
-    RES="$(curl -k --silent -H "Authorization: ${DD_API_KEY}" \
-    -F "description=SCA Scan ($dt)" \
-    -F "file=@sca_report.json" \
-    -F "scan_date=${d}" \
-    -F "minimum_severity=Info" \
-    -F "active=true" \
-    -F "verified=true" \
-    -F "scan_type=Dependency Track Finding Packaging Format (FPF) Export" \
-    -F "engagement=${ENGAGEMENT_ID}" \
-    -F "close_old_findings=true" \
-    "${DD_URL}/import-scan/")"
 
-    if [ "$(echo $RES | jq '.scan_date')" == "" ]; then
-		echo "Could not import SCA Scan report."
-		echo $RES;
-		exit 1
-	fi
-    echo "Scan report imported. Success."
-    echo $RES
+    # If engagement does not exist, create engagement
+    if [ ! -z "$ENG_NAME" ]; then
+
+        # Create engagement
+        RES="$(curl -k -X POST "${DD_URL}/engagements/" \
+        -H "accept: application/json" \
+        -H "Content-Type: application/json" \
+        -H "Authorization: ${DD_API_KEY}" \
+        -d '{"tags": [ "Security" ],
+            "name": "'${ENG_NAME}'",
+            "description": "App Sec Engagement",
+            "version": "1.0",
+            "first_contacted": "'${d}'",
+            "target_start": "'${start_d}'",
+            "target_end": "'${end_d}'",
+            "reason": "null",
+            "threat_model": true,
+            "api_test": true,
+            "pen_test": true,
+            "check_list": true,
+            "status": "Not Started",
+            "engagement_type": "CI/CD",
+            "build_id": "'${BUILD_ID}'",
+            "commit_hash": "'${COMMIT_ID}'",
+            "branch_tag": "'${BRANCH}'",
+            "source_code_management_uri": "'${REPO_URL}'",
+            "deduplication_on_engagement": true,
+            "product": "'${PRODUCT_ID}'" }'
+            )"
+    
+        #echo ${RES}       
+        if [ "$(echo $RES | jq '.id')" == "" ]; then
+            echo "Error: Could not create engagement."
+            echo $RES;
+            exit 1
+        fi
+        echo "Engagement created. Success."
+        ENGAGEMENT_ID=$(echo "${RES}" | jq '.id')
+        #echo ${ENGAGEMENT_ID}
+
+        # # Create test
+        # RES="$(curl -k -X POST "${DD_URL}/tests/" \
+        # -H "accept: application/json" \
+        # -H "Content-Type: application/json" \
+        # -H "Authorization: ${DD_API_KEY}" \
+        # -d '{"engagement": "'${ENGAGEMENT_ID}'",
+        #     "tags": [ "DT", "SCA" ],
+        #     "description": "Dep Track Scan",            
+        #     "target_start": "'${start_d}'",
+        #     "target_end": "'${end_d}'",
+        #     "created": "'${dt}'",
+        #     "test_type": 164}'
+        #     )"
+    
+        # Import scan
+        RES="$(curl -k --silent -H "Authorization: ${DD_API_KEY}" \
+        -F "description=SCA Scan ($dt)" \
+        -F "file=@sca_report.json" \
+        -F "scan_date=${d}" \
+        -F "minimum_severity=Info" \
+        -F "active=true" \
+        -F "verified=true" \
+        -F "scan_type=Dependency Track Finding Packaging Format (FPF) Export" \
+        -F "engagement=${ENGAGEMENT_ID}" \
+        -F "tags=["SCA"]" \
+        -F "close_old_findings=true" \
+        "${DD_URL}/import-scan/")"
+
+        if [ "$(echo $RES | jq '.scan_date')" == "" ]; then
+            echo "Could not import SCA Scan report."
+            echo $RES;
+            exit 1
+        fi
+        echo "Scan report imported. Success."
+        echo $RES
+    else
+        # Engagement exist, find specific test
+        local test_list="$(curl -k --silent -X GET "${DD_URL}/tests/" \
+                -H "accept: application/json" \
+                -H "Authorization: ${DD_API_KEY}")"
+        
+        # Get engagement ID based on engagement name
+        ENG_ID=$(echo "${eng_list}" | jq '.results[] | select(.name == '${DT_PROJECT_NAME}') | .id')
+        # Get test ID based on engagement ID
+        TEST_ID=$(echo "${test_list}" | jq '.results[] | select(.id == '${ENG_ID}') | .id')
+
+        # Re-import scan to test ID
+        
+        echo $ENG_ID
+        echo $TEST_ID
+        exit 0
+
+    fi
 }
 
 if [[ ! -z $json_export ]]; then
     echo $json_export>sca_report.json
     ls -la
-    # Import to Defect Dojo
-    
+    # Import to Defect Dojo 
     dd_upload
     #result=$(dd_upload)
     #echo $result
