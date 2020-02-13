@@ -337,7 +337,7 @@ dd_upload(){
                 -H "accept: application/json" \
                 -H "Authorization: ${DD_API_KEY}")"
     # Find product Id based on product name
-    PRODUCT_ID=$(echo "${product_list}" | jq '.results[] | select(.name == '${BU}') | .id')
+    PRODUCT_ID=$(echo "${product_list}" | jq '.results[] | select(.name == '"${BU}"') | .id')
     # Find engagement name based on project name in dep track
     ENG_NAME=$(echo "${eng_list}" | jq '.results[] | select(.name == '${DT_PROJECT_NAME}') | .name')
     
@@ -434,7 +434,7 @@ dd_upload(){
         TEST_ID=$(echo "${test_list}" | jq '.results[] | select(.id == '${ENG_ID}') | .id')
 
         # Re-import scan to test ID
-        
+
         echo $ENG_ID
         echo $TEST_ID
         exit 0
