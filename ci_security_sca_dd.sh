@@ -349,7 +349,7 @@ dd_upload(){
     fi
 
     # If engagement does not exist, create engagement
-    if [ ! -z "$ENG_NAME" ]; then
+    if [ -z "$ENG_NAME" ]; then
 
         # Create engagement
         RES="$(curl -k -X POST "${DD_URL}/engagements/" \
