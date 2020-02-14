@@ -338,7 +338,7 @@ dd_upload(){
                 -H "Authorization: ${DD_API_KEY}")"
     # Find product Id based on product name
     BU=$(echo "${BU}" | base64 -d)
-    PRODUCT_ID=$(echo "${product_list}" | jq '.results[] | select(.name == '$BU') | .id')
+    PRODUCT_ID=$(echo "${product_list}" | jq '.results[] | select(.name == 'env.BU') | .id')
     # Find engagement name based on project name in dep track
     ENG_NAME=$(echo "${eng_list}" | jq '.results[] | select(.name == '${DT_PROJECT_NAME}') | .name')
     
