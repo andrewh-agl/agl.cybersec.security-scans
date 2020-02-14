@@ -344,14 +344,15 @@ dd_upload(){
     ENG_NAME=$(echo "${eng_list}" | jq '.results[] | select(.name == '${DT_PROJECT_NAME}') | .name')
     
     #echo ${PRODUCT_ID}
-    if [ "$PRODUCT_ID" == "" ]; then
+    if [ -z "$PRODUCT_ID" ]; then
         echo "BU does not exist in Defect Dojo.";
         exit 1;
     fi
 
     # If engagement does not exist, create engagement
     if [ -z "$ENG_NAME" ]; then
-
+        $ENG_NAME=:${DT_PROJECT_NAME}
+        echo $ENG_NAME
         # Create engagement
         RES="$(curl -k -X POST "${DD_URL}/engagements/" \
         -H "accept: application/json" \
