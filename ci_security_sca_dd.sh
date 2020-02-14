@@ -307,8 +307,9 @@ fi
 # Function to upload to DD
 dd_upload(){
     local dt=$(date +"%Y-%m-%d%H:%M:%S")
+    local d=$(date +"%Y-%m-%d")
     # start date is 2 days after first contact
-    local start_d=$(date -d "+2 days" +"%Y-%m-%d" +2d)
+    local start_d=$(date +"%Y-%m-%d" -d "+2 days")
     # end date is 6 days after start date
     local end_d=$(date +"%Y-%m-%d" -d "$start_d+6 days")
     ###
@@ -379,7 +380,7 @@ dd_upload(){
             )"
     
         #echo ${RES}       
-        if [ "$(echo $RES | jq '.id')" == "" ]; then
+        if [ -z "$(echo $RES | jq '.id')" ]; then
             echo "Error: Could not create engagement."
             echo $RES;
             exit 1
