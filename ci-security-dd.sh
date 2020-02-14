@@ -22,14 +22,13 @@ python_tool_install() {
 
 dotnet_tool_install() {
     # Register Microsoft key and feed
-    sudo apt-get remove dotnet-host
     wget -q https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb
     sudo dpkg -i packages-microsoft-prod.deb
     # Install .NET SDK
     sudo apt-get update
     sudo add-apt-repository universe
     sudo apt-get install -y apt-transport-https
-    sudo apt-get install -y dotnet-sdk-3.0
+    sudo apt-get install dotnet-sdk-3.0
 }
 
 node_install() {
@@ -165,8 +164,6 @@ case $TYPE in
         echo "Hello .NET!" ;
         dotnet_tool_install ;
         dotnet --info
-        dotnet --list-sdks
-        dotnet --list-runtimes
         dotnet tool install --tool-path . CycloneDX ;
         #./dotnet-CycloneDX --help
         #./dotnet-CycloneDX $SLN -o $DIR
