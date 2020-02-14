@@ -435,7 +435,7 @@ dd_upload(){
         # Get engagement ID based on engagement name
         ENG_ID=$(echo "${eng_list}" | jq '.results[] | select(.name == '${DT_PROJECT_NAME}') | .id')
         # Get test ID based on engagement ID
-        TEST_ID=$(echo "${test_list}" | jq '.results[] | select(.id == '${ENG_ID}') | .id')
+        TEST_ID=$(echo "${test_list}" | jq '.results[] | select(.engagement == '${ENG_ID}') | .id')
 
         # Re-import scan to test ID
 
