@@ -438,9 +438,27 @@ dd_upload(){
         TEST_ID=$(echo "${test_list}" | jq '.results[] | select(.engagement == '${ENG_ID}') | .id')
 
         # Re-import scan to test ID
-
         echo $ENG_ID
         echo $TEST_ID
+        # Re-import scan
+        RES="$(curl -k --silent -H "Authorization: ${DD_API_KEY}" \
+        -F "description=SCA Scan ($dt)" \
+        -F "file=@sca_report.json" \
+        -F "scan_date=${d}" \
+        -F "minimum_severity=Info" \
+        -F "active=true" \
+        -F "verified=true" \
+        -F "scan_type=Dependency Track Finding Packaging Format (FPF) Export" \
+        -F "test=${TEST_ID}" \
+        "${DD_URL}/reimport-scan/")"
+
+        if [ "$(echo $RES | jq '.scan_date')" == "" ]; then
+            echo "Could not import SCA Scan report."
+            echo $RES;
+            exit 1
+        fi
+        echo "Scan report imported. Success."
+        echo $RES
         exit 0
 
     fi
