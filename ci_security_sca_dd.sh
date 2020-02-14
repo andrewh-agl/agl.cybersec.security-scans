@@ -351,7 +351,8 @@ dd_upload(){
 
     # If engagement does not exist, create engagement
     if [ -z "$ENG_NAME" ]; then
-        ENG_NAME=$(echo $DT_PROJECT_NAME)
+        # Remove double quotes from name
+        ENG_NAME=$(echo "${DT_PROJECT_NAME//\"}")
         echo $ENG_NAME
         # Create engagement
         RES="$(curl -k -X POST "${DD_URL}/engagements/" \
