@@ -164,6 +164,8 @@ case $TYPE in
         echo "Hello .NET!" ;
         dotnet_tool_install ;
         dotnet --info
+        dotnet --list-sdk
+        dotnet --list-runtimes
         dotnet tool install --tool-path . CycloneDX ;
         #./dotnet-CycloneDX --help
         #./dotnet-CycloneDX $SLN -o $DIR
