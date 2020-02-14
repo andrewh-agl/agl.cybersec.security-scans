@@ -28,7 +28,7 @@ dotnet_tool_install() {
     sudo apt-get update
     sudo add-apt-repository universe
     sudo apt-get install -y apt-transport-https
-    sudo apt-get install dotnet-sdk-3.0
+    sudo apt-get install -y dotnet-sdk-3.0
 }
 
 node_install() {
