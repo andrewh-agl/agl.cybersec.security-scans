@@ -458,10 +458,8 @@ dd_upload(){
             echo $RES;
             exit 1
         fi
-        echo "Scan report imported. Success."
+        echo "Scan report re-imported. Success."
         echo $RES
-        exit 0
-
     fi
 }
 
