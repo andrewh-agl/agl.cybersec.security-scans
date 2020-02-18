@@ -441,7 +441,6 @@ dd_upload(){
         # Re-import scan to test ID
         echo $ENG_ID
         echo $TEST_ID
-        ls -ltr
         # Re-import scan
         RES="$(curl -k --silent -X -H "Authorization: ${DD_API_KEY}" \
         -F "scan_date=${d}" \
