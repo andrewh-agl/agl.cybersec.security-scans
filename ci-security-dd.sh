@@ -442,7 +442,7 @@ dd_upload(){
         echo $ENG_ID
         echo $TEST_ID
         # Re-import scan
-        RES="$(curl -k --silent -X -H "Authorization: ${DD_API_KEY}" \
+        RES="$(curl -k --silent -H "Authorization: ${DD_API_KEY}" \
         -F "scan_date=${d}" \
         -F "minimum_severity=Info" \
         -F "active=true" \
