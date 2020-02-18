@@ -443,13 +443,12 @@ dd_upload(){
         echo $TEST_ID
         # Re-import scan
         RES="$(curl -k --silent -H "Authorization: ${DD_API_KEY}" \
-        -F "description=SCA Scan ($dt)" \
-        -F "file=@sca_report.json" \
         -F "scan_date=${d}" \
         -F "minimum_severity=Info" \
         -F "active=true" \
         -F "verified=true" \
         -F "scan_type=Dependency Track Finding Packaging Format (FPF) Export" \
+        -F "file=@sca_report.json" \
         -F "test=${TEST_ID}" \
         "${DD_URL}/reimport-scan/")"
 
