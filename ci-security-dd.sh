@@ -1,7 +1,7 @@
 #!/bin/bash
 set -x
 # Exit on error
-set -e
+set -ef
 
 # Functions
 python_tool_install() {
@@ -413,7 +413,7 @@ dd_upload(){
         -F "scan_date=${d}" \
         -F "minimum_severity=Info" \
         -F "active=true" \
-        -F "verified=true" \
+        -F "verified=false" \
         -F "scan_type=Dependency Track Finding Packaging Format (FPF) Export" \
         -F "engagement=${ENGAGEMENT_ID}" \
         -F "tags=["SCA"]" \
@@ -446,7 +446,7 @@ dd_upload(){
         -F "scan_date=${d}" \
         -F "minimum_severity=Info" \
         -F "active=true" \
-        -F "verified=true" \
+        -F "verified=false" \
         -F "scan_type=Dependency Track Finding Packaging Format (FPF) Export" \
         -F "file=@sca_report.json" \
         -F "test=${TEST_ID}" \
