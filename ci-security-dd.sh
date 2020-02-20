@@ -360,7 +360,7 @@ dd_upload(){
         -H "accept: application/json" \
         -H "Content-Type: application/json" \
         -H "Authorization: ${DD_API_KEY}" \
-        -d '{"tags": [ "Security" ],
+        -d '{"tags": [ "'${TEAM}'" ],
             "name": "'${ENG_NAME}'",
             "description": "App Sec Engagement",
             "version": "1.0",
