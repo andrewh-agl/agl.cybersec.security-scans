@@ -65,11 +65,11 @@ DT_URL="https://deptrack.australiasoutheast.cloudapp.azure.com/api/v1"
 DD_URL="https://52.163.231.2/api/v2"
 # Read values from env
 # Dep Track API Key and Project UUIDs are unique to Project/team
-DEFAULT_PROJECT_UUID="2d395a41-d684-45c7-a8f9-92d602a43223"
-DEFAULT_API_KEY="6esBJT96rlTNMfivA09hyikpHPNtV7Rz"
+DEFAULT_PROJECT_UUID="<Dep Track Project UUID>"
+DEFAULT_API_KEY="<Dep Track API Key>"
 PROJECT_UUID=${PROJECT_UUID:-$DEFAULT_PROJECT_UUID}
 # Dojo API key is common
-DD_KEY="6f1f60c9bf8161a16227470c09b53298b42ed62e" 
+DD_KEY="<Defect Dojo API Key>" 
 DD_API_KEY="Token ${DD_KEY}"
 API_KEY=${API_KEY:-$DEFAULT_API_KEY}
 
