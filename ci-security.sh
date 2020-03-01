@@ -296,7 +296,7 @@ json_export="$(curl -k --silent "GET" "${DT_URL}/finding/project/${PROJECT_UUID}
             -H 'Content-Type: application/json' \
             -H "X-API-Key: ${API_KEY}")"
 
-#echo $json_export
+echo $json_export
 # Grep project name from dep track
 DT_PROJECT_NAME=$(echo $json_export | jq '.project.name')
 if [ "$DT_PROJECT_NAME" == "" ]; then
