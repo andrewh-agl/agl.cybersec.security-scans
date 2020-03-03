@@ -192,11 +192,8 @@ case $TYPE in
     "Node")
         echo "Hello node! Let me setup the env..";
         node_install ;
-        sudo npm install -g @cyclonedx/bom ;
         cd $DIR
-        npm install ;
-        ls -ltr ;
-        cyclonedx-bom -o bom.xml ;
+        npx @cyclonedx-bom -o bom.xml ;
         ls -ltr
         cd security-scans
         #cat bom.xml
